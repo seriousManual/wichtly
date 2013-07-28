@@ -1,0 +1,17 @@
+{
+    "name": "wichtly",
+    "description": "wicht utlitiy",
+    "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/zaphod1984/wichtly"
+    },
+    "author": "Manuel Ernst <zaphod84@gmx.de>",
+    "dependencies": {},
+    "devDependencies": {
+        "express": "3.3"
+    },
+    "main": "./server.js",
+    "keywords": ["wicht"],
+    "scripts": {}
+}
