@@ -2,14 +2,56 @@
 
 <html ng-app>
     <head>
+        <meta charset="utf-8" />
+        <title>Wichtly</title>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+        <script src="js/controllers.js" type="text/javascript"></script>
 
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <div>
-            perkins!
+        <div id="loginForm">
+            <h1>Login</h1>
+            E-Mail: <input type="text" name="email"><br>
+            Password: <input type="text" name="password"><br>
+            <input type="submit" value="send">
+        </div>
+
+        <div id="changeView">
+            <h1>Detail</h1>
+            Headline:<input type="text" name="headline"><br>
+            Text: <textarea name="text"></textarea>
+        </div>
+
+        <div id="list">
+            <h1>List</h1>
+
+            <h2>FooPerson</h2>
+
+            <h3>headline1</h3>
+            <p>lorem ipsum wurst</p>
+
+            <h3>headline2</h3>
+            <p>lorem ipsum wurst</p>
+
+            <h3>headline3</h3>
+            <p>lorem ipsum wurst</p>
+
+            <h2>FooPerson2</h2>
+
+            <h3>headline4</h3>
+            <p>lorem ipsum wurst</p>
+
+            <h3>headline5</h3>
+            <p>lorem ipsum wurst</p>
+
+            <h3>headline6</h3>
+            <p>lorem ipsum wurst</p>
         </div>
     </body>
 </html>
