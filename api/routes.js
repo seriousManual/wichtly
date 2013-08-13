@@ -16,6 +16,6 @@ module.exports.install = install;
             ownerId: 2,
             headLine: '',
             text: '',
-            bought: false 
+            bought: false
         }
 */
