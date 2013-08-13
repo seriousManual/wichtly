@@ -15,30 +15,6 @@
         <link href="css/style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <div id="loginForm" ng-controller="loginController">
-            <h1>Login</h1>
-            E-Mail: <input type="text" name="email"><br>
-            Password: <input type="text" name="password"><br>
-            <input type="submit" value="send">
-        </div>
-
-        <div id="changeView" ng-controller="detailController">
-            <h1>Detail</h1>
-            Headline:<input type="text" name="headline"><br>
-            Text: <textarea name="text"></textarea>
-        </div>
-
-        <div id="list" ng-controller="wishListController">
-            <h1>List</h1>
-            <div ng-repeat="person in grouped">
-                <h2>{{person.name}}</h2>
-
-                <div ng-repeat="wish in person.wishes">
-                    <h3>{{wish.headline}}</h3>
-                    <p>{{wish.text}}</p>
-                    <button value="edit">edit</button> <button value="delete">delete</button> <button value="bought">bought</button>
-                </div>
-            </div>
-        </div>
+        <div ng-view></div>
     </body>
 </html>

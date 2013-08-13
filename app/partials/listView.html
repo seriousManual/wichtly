@@ -1,0 +1,12 @@
+<div id="list">
+    <h1>List</h1>
+    <div ng-repeat="person in grouped">
+        <h2>{{person.name}}</h2>
+
+        <div ng-repeat="wish in person.wishes">
+            <h3>{{wish.headline}}</h3>
+            <p>{{wish.text}}</p>
+            <button value="edit">edit</button> <button value="delete">delete</button> <button value="bought">bought</button>
+        </div>
+    </div>
+</div>

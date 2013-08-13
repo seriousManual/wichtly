@@ -1,32 +1,28 @@
-function wishList($scope) {
-    $scope.grouped = [
-        {
-            name:"foo",
-            wishes:[
-                {
-                    headline:"headline1",
-                    text:"longText is long"
-                },
-                {
-                    headline:"headline2",
-                    text:"lalalalalalala"
-                },
-                {
-                    headline:"headline3",
-                    text:"this is anouther text"
-                }
-            ]
-        },
-        {
-            name:"bar",
-            wishes:[
-                {
-                    headline:"wurstHeadline",
-                    text:"wurstText"
-                }
-            ]
-        }
-    ];
+function wishList($scope, $http) {
+    $http.get('/api/wish')
+            .success(function(data) {
+                var grouped = [];
+                var users = {};
+
+                data.forEach(function(data) {
+                    if(!users[data.owner]) {
+                        users[data.owner] = [];
+                    }
+
+                    users[data.owner].push(data);
+                });
+
+                Object.keys(users).forEach(function(userName) {
+                    var tmp = {
+                        name: userName,
+                        wishes: users[userName]
+                    };
+
+                    grouped.push(tmp);
+                });
+
+                $scope.grouped = grouped;
+            });
 }
 
 module.exports = wishList;
