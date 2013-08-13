@@ -6,7 +6,10 @@
         <div ng-repeat="wish in person.wishes">
             <h3>{{wish.headline}}</h3>
             <p>{{wish.text}}</p>
-            <button value="edit">edit</button> <button value="delete">delete</button> <button value="bought">bought</button>
+
+            <button value="edit" ng-click="edit(wish.id)">edit</button>
+            <button value="delete" ng-click="delete(wish.id)">delete</button>
+            <button value="bought" ng-click="bought(wish.id)">bought</button>
         </div>
     </div>
 </div>

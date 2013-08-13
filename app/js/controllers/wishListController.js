@@ -1,4 +1,4 @@
-function wishList($scope, $http) {
+function wishList($scope, $http, $location) {
     $http.get('/api/wish')
             .success(function(data) {
                 var grouped = [];
@@ -23,6 +23,10 @@ function wishList($scope, $http) {
 
                 $scope.grouped = grouped;
             });
+
+    $scope.edit = function(wishId) {
+        $location.path('/wish/' + wishId);
+    }
 }
 
 module.exports = wishList;

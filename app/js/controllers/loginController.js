@@ -1,6 +1,6 @@
-function loginController($scope) {
-    $scope.foo = function() {
-        $scope.email = Math.random();
+function loginController($scope, $location) {
+    $scope.login = function() {
+        $location.path('/wish');
     }
 }
 
