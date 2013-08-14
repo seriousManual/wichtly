@@ -15,6 +15,10 @@
         <link href="css/style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
+        <div id="message" class="alert alert-{{data.className}}" ng-controller="messageController">
+            <a class="close" data-dismiss="alert">x</a>
+            <strong>{{data.headline}}</strong> {{data.message}}
+        </div>
         <div ng-view></div>
     </body>
 </html>
