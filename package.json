@@ -10,7 +10,8 @@
   "dependencies": {
     "browserify": "~2.26.0",
     "express": "~3.3",
-    "connect-browserify": "~0.6.6"
+    "connect-browserify": "~0.6.6",
+    "optimist": "~0.6.0"
   },
   "main": "./server.js",
   "keywords": [
