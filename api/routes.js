@@ -35,8 +35,13 @@ function install(app) {
     app.get('/api/wish/:id', function(req, res, next) {
         var retData = data.filter(function(wish) { return wish.id == req.params.id; })[0];
 
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.write(JSON.stringify(retData));
+        if(retData) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify(retData));
+        } else {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+        }
+
         res.end();
     });
 }
@@ -49,12 +54,18 @@ module.exports.install = install;
 // PUT /api/wish
 // DELETE /api/wish
 
+// GET /api/comment/:id
+// GET /api/comment?wish=_wishId
+// POST /api/comment/:id
+// PUT /api/comment
+// DELETE /api/comment
+
 /*
-        {
-            id: 1,
-            ownerId: 2,
-            headLine: '',
-            text: '',
-            bought: false
-        }
+    {
+        id: 1,
+        ownerId: 2,
+        headLine: '',
+        text: '',
+        bought: false
+    }
 */
