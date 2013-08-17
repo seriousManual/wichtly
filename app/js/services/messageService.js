@@ -1,11 +1,8 @@
 var angular = require('../lib/angular');
 
-function MessageService() {
-    this._data = {
-        headline: '',
-        message: '',
-        className: ''
-    };
+function MessageService($timeout) {
+    this._data = [];
+    this._$timeout = $timeout;
 }
 
 MessageService.prototype.error = function(headline, message) {
@@ -21,7 +18,7 @@ MessageService.prototype.ok = function(headline, message) {
 };
 
 MessageService.prototype._write = function(what, headline, message) {
-    var _mssg, _headline;
+    var _mssg, _headline, that = this;
     if(!message) {
         _mssg = headline;
         _headline = what;
@@ -30,9 +27,11 @@ MessageService.prototype._write = function(what, headline, message) {
         _headline = headline;
     }
 
-    this._data.headline = _headline;
-    this._data.message = _mssg;
-    this._data.className = what;
+    this._data.push({
+        what: what,
+        headline: _headline,
+        message: _mssg
+    });
 };
 
 MessageService.prototype.data = function() {

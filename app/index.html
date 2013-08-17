@@ -5,20 +5,23 @@
         <meta charset="utf-8" />
         <title>Wichtly</title>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="/js/jquery.min.js"></script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+        <script src="/js/angular.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
         <script src="/js/app.js" type="text/javascript"></script>
 
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <div id="message" class="alert alert-{{data.className}}" ng-controller="messageController">
-            <a class="close" data-dismiss="alert">x</a>
-            <strong>{{data.headline}}</strong> {{data.message}}
+        <div id="messages" ng-controller="messageController">
+            <message class="message alert" ng-repeat="message in messages" message="message">
+                <a class="close" data-dismiss="alert">x</a>
+                <strong>{{message.headline}}</strong> {{message.message}}
+            </message>
         </div>
+
         <div ng-view></div>
     </body>
 </html>

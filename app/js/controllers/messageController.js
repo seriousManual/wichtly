@@ -1,5 +1,5 @@
 function messageController($scope, messageService) {
-    $scope.data = messageService.data();
+    $scope.messages = messageService.data();
 }
 
 module.exports = messageController;
