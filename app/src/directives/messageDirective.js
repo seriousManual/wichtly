@@ -6,10 +6,10 @@ function messageDirective($timeout) {
         },
         templateUrl: '/partials/messageView.html',
         link:function ($scope, $element, attributes) {
+            //TODO: after 2000ms remove the element from the dom *AND* the model
             $timeout(function() {
                 $element.fadeOut(500);
             }, 2000);
-            //TODO: remove the element from the dom *AND* the controller
         }
     };
 }

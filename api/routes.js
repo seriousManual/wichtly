@@ -1,7 +1,11 @@
+var authorization = require('./middlewares/authorization');
+var authorizator = require('./lib/authorization').create();
+var errors = require('./lib/errors');
+
 var data = [
     {
         id: 1,
-        owner: 'foo',
+        owner: 1,
         headline: 'fooHeadline',
         text: 'fooText',
         created: (new Date()).getTime(),
@@ -9,7 +13,7 @@ var data = [
     },
     {
         id: 2,
-        owner: 'foo',
+        owner: 1,
         headline: 'fooHeadline2',
         text: 'fooText2',
         created: (new Date()).getTime(),
@@ -17,7 +21,7 @@ var data = [
     },
     {
         id: 3,
-        owner: 'bert',
+        owner: 2,
         headline: 'bertHeadline',
         text: 'bertHeadline',
         created: (new Date()).getTime(),
@@ -26,13 +30,24 @@ var data = [
 ];
 
 function install(app) {
-    app.get('/api/wish', function(req, res, next) {
+    app.get('/api/authenticate', function(req, res, next) {
+        var result = authorizator.authorize(req);
+
+        if(!result) {
+            return next(new errors.Unauthorized());
+        }
+
+        res.status(200);
+        res.end();
+    });
+
+    app.get('/api/wish', authorization, function(req, res, next) {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.write(JSON.stringify(data));
         res.end();
     });
 
-    app.get('/api/wish/:id', function(req, res, next) {
+    app.get('/api/wish/:id', authorization, function(req, res, next) {
         var retData = data.filter(function(wish) { return wish.id == req.params.id; })[0];
 
         if(retData) {
@@ -43,6 +58,16 @@ function install(app) {
         }
 
         res.end();
+    });
+
+    app.use(function errorHandler(error, req, res, next) {
+        console.log( error );
+        if(!error.statusCode || !error.message) {
+            error = new errors.InternalServerError();
+        }
+
+        res.setHeader('Content-Type', 'application/json');
+        res.send(error.statusCode, error.message);
     });
 }
 

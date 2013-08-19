@@ -9,6 +9,9 @@ var routes = require('./api/routes');
 var app = express();
 var port = argv.port || 8000;
 
+app.use(express.cookieParser());
+app.use(express.session({secret: '1234567890QWERTY'}));
+
 app.use('/js/app.js', browserify.serve({ entry: path.join(__dirname, 'app/src/app.js') }));
 app.use(express.static(__dirname + '/app'));
 
