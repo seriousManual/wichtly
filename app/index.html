@@ -16,10 +16,7 @@
     </head>
     <body>
         <div id="messages" ng-controller="messageController">
-            <message class="message alert" ng-repeat="message in messages" message="message">
-                <a class="close" data-dismiss="alert">x</a>
-                <strong>{{message.headline}}</strong> {{message.message}}
-            </message>
+            <message ng-repeat="message in messages" message="message" class="message"/>
         </div>
 
         <div ng-view></div>

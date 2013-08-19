@@ -4,9 +4,8 @@ function messageDirective($timeout) {
         scope: {
             message: '='
         },
+        templateUrl: '/partials/messageView.html',
         link:function ($scope, $element, attributes) {
-            $element.addClass('alert-' + $scope.message.what);
-
             $timeout(function() {
                 $element.fadeOut(500);
             }, 2000);
