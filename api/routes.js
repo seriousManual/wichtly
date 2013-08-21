@@ -31,14 +31,14 @@ var data = [
 
 function install(app) {
     app.get('/api/authenticate', function(req, res, next) {
-        var result = authorizator.authorize(req);
+        authorizator.authorize(req, function(error, authorized) {
+            if(!authorized) {
+                return next(new errors.Unauthorized());
+            }
 
-        if(!result) {
-            return next(new errors.Unauthorized());
-        }
-
-        res.status(200);
-        res.end();
+            res.status(200);
+            res.end();
+        });
     });
 
     app.get('/api/wish', authorization, function(req, res, next) {

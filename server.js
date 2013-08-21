@@ -4,6 +4,7 @@ var express = require('express');
 var browserify = require('connect-browserify');
 var argv = require('optimist').argv;
 
+var connection = require('./api/lib/connection');
 var routes = require('./api/routes');
 
 var app = express();

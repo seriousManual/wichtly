@@ -1,11 +1,6 @@
-var users = {
-    'a': {id: 1, password:'1'},
-    'b': {id: 2, password:'2'}
-};
+var User = require('./models/User');
 
-function Authorizor() {
-
-}
+function Authorizor() {}
 
 Authorizor.prototype.isAuthorized = function(req) {
     if(req.session && req.session.authorized) {
@@ -15,21 +10,25 @@ Authorizor.prototype.isAuthorized = function(req) {
     return false;
 };
 
-Authorizor.prototype.authorize = function(req) {
+Authorizor.prototype.authorize = function(req, callback) {
     var _name, _pwd;
 
     if(req.query && req.query.userName && req.query.password) {
         _name = req.query.userName;
         _pwd = req.query.password;
 
-        if(users[_name] && users[_name].password === _pwd) {
-            req.session.authorized = users[_name].id;
+        User.find({name: _name, password: _pwd}).exec(function(error, result) {
+            console.log( result );
+            if (error || result.length == 0) {
+                return callback(null, false);
+            }
 
-            return true;
-        }
+            req.session.authorized = true;
+            return callback(null, true);
+        });
+    } else {
+        return callback(null, false);
     }
-
-    return false;
 };
 
 var instance = null;
