@@ -30,7 +30,7 @@ var data = [
 ];
 
 function install(app) {
-    app.get('/api/authenticate', function(req, res, next) {
+    app.post('/api/authenticate', function(req, res, next) {
         authorizator.authorize(req, function(error, authorized) {
             if(!authorized) {
                 return next(new errors.Unauthorized());
