@@ -13,8 +13,6 @@ Authorizor.prototype.isAuthorized = function(req) {
 Authorizor.prototype.authorize = function(req, callback) {
     var _name, _pwd;
 
-    console.log( req.query, req.body );
-
     if(req.body && req.body.userName && req.body.password) {
         _name = req.body.userName;
         _pwd = req.body.password;
