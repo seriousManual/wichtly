@@ -10,6 +10,10 @@ Authorizor.prototype.isAuthorized = function(req) {
     return false;
 };
 
+Authorizor.prototype.unauthorize = function(req) {
+    delete req.session.user;
+};
+
 Authorizor.prototype.authorize = function(req, callback) {
     var _name, _pwd;
 

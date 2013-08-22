@@ -41,6 +41,13 @@ function install(app) {
         });
     });
 
+    app.get('/api/unauthenticate', function(req, res, next) {
+        authorizator.unauthorize(req);
+
+        res.status(200);
+        res.end();
+    });
+
     app.get('/api/wish', authorization, function(req, res, next) {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.write(JSON.stringify(data));
