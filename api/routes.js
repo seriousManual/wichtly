@@ -61,7 +61,6 @@ function install(app) {
     });
 
     app.use(function errorHandler(error, req, res, next) {
-        console.log( error );
         if(!error.statusCode || !error.message) {
             error = new errors.InternalServerError();
         }
