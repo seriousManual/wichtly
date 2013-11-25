@@ -7,7 +7,7 @@ var MongoStore = require('connect-mongo')(express);
 
 var configuration = require('./api/lib/configuration');
 var connection = require('./api/lib/connection');
-var routes = require('./api/routes');
+var routes = require('./api/lib/routes');
 
 var app = express();
 app.use(express.cookieParser());
@@ -21,7 +21,7 @@ app.use(express.session({
 app.use('/js/app.js', browserify.serve({ entry: path.join(__dirname, 'app/src/app.js') }));
 app.use(express.static(__dirname + '/app'));
 
-routes.install(app);
+routes(app);
 
 app.listen(configuration.server.port);
 
