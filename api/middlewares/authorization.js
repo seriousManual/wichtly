@@ -16,9 +16,9 @@ module.exports = function (tokenHandler) {
 
         validate(req, tokenHandler, function(error, validated) {
             if(error) return next(error);
-console.log( targetedUser, validated );
+
             if(targetedUser !== validated.userId) {
-                next(new errors.Unauthorized());
+                return next(new errors.Unauthorized());
             }
 
             req.WICHTLY.user = validated.userId;
