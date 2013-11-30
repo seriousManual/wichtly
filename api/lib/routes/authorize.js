@@ -1,22 +1,18 @@
-var authorizator = require('../authorization').create();
 var errors = require('../errors');
 
-module.exports = function(app) {
+module.exports = function(app, tokenHandler, userLoader) {
+
     app.post('/api/authenticate', function(req, res, next) {
-        authorizator.authorize(req, function(error, authorized) {
-            if(!authorized) {
+        var userName = req.body.userName;
+        var password = req.body.password;
+
+        userLoader.loadUser(userName, password, function(error, user) {
+            if(error || !error) {
                 return next(new errors.Unauthorized());
             }
 
-            res.status(200);
-            res.end();
+            res.send({token: tokenHandler.generateToken(user.id)});
         });
     });
 
-    app.get('/api/unauthenticate', function(req, res, next) {
-        authorizator.unauthorize(req);
-
-        res.status(200);
-        res.end();
-    });
 };

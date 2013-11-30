@@ -1,10 +1,10 @@
 module.exports = {
-    server: {
-        port: 8000
+    authorization: {
+        secret: 'foo'
     },
 
-    session: {
-        secret: 'foobar'
+    server: {
+        port: 8000
     },
 
     database: {

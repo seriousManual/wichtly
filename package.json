@@ -14,7 +14,8 @@
     "optimist": "~0.6.0",
     "mongoose": "~3.6.17",
     "connect-mongo": "~0.3.3",
-    "cloneextend": "0.0.3"
+    "cloneextend": "0.0.3",
+    "depugger": "~0.2.0"
   },
   "main": "./server.js",
   "keywords": [

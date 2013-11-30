@@ -1,12 +1,13 @@
 var errors = require('../lib/errors');
-var authoritator = require('../lib/authorization').create();
 
-function authorization(req, res, next) {
-    if(authoritator.isAuthorized(req)) {
-        return next();
+module.exports = function(tokenHandler) {
+    return function authorization(req, res, next) {
+        var authToken = req.headers['wichtlyAuth'];
+
+        if(tokenHandler.validate(authToken)) {
+            return next();
+        }
+
+        next(new errors.Unauthorized());
     }
-
-    next(new errors.Unauthorized());
-}
-
-module.exports = authorization;
+};
