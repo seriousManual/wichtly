@@ -38,6 +38,20 @@ WishLoader.prototype.updateWish = function(wishId, title, description, bought, c
     Wish.findByIdAndUpdate(wishId, update, callback);
 };
 
+WishLoader.prototype.removeWish = function(wishId, callback) {
+    Wish.findById(wishId, function(error, loadedWish) {
+        if(error) return callback(error, null);
+
+        if(!loadedWish) return callback(null, false);
+
+        loadedWish.remove(function(error) {
+            if(error) return callback(error, null);
+
+            callback(null, true);
+        });
+    });
+};
+
 WishLoader.prototype._query = function(query, callback) {
     var that = this;
     Wish

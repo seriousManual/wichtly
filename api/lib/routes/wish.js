@@ -41,7 +41,7 @@ module.exports = function (app, authorization, wishLoader) {
         });
     });
 
-    app.post('/api/user/:userId/wish/:wishId', authorization, function (req, res, next) {
+    app.post('/api/user/:userId/wish/:wishId', authorization.sameUser, function (req, res, next) {
         var title = req.body.title;
         var description = req.body.description;
         var bought = req.body.bought;
@@ -50,13 +50,27 @@ module.exports = function (app, authorization, wishLoader) {
         d('updating wish: id: %s, title: %s, description: %s, bought: %s', wishId, title, description, bought);
 
         wishLoader.updateWish(wishId, title, description, bought, function(error, updatedWish) {
-            console.log( arguments );
-
             if(error) return next(error);
 
             if(!updatedWish) return next(new errors.NotFoundError('wish ' + wishId));
 
-            res.send(200, updatedWish);
+            res.send(204, updatedWish);
+        });
+    });
+
+    app.delete('/api/user/:userId/wish/:wishId', authorization.sameUser, function(req, res, next) {
+        var wishId = req.params.wishId;
+
+        d('deleting wish: %s', wishId);
+
+        wishLoader.removeWish(wishId, function(error, result) {
+            if(error) return next(error);
+
+            if(!result) {
+                return next(new errors.NotFoundError('wish ' + wishId));
+            }
+
+            res.send(204, {}); //TODO: what to return in the body?
         });
     });
 };
