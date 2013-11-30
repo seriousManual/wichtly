@@ -7,7 +7,7 @@ module.exports = function (app, authorization, wishLoader) {
 
         d(wishId ? 'wish ' + wishId : 'all wishes');
 
-        foo(wishLoader, null, wishId || null, function(error, result) {
+        query(wishLoader, null, wishId || null, function(error, result) {
             if(error) return next(error);
 
             res.send(200, result);
@@ -20,7 +20,7 @@ module.exports = function (app, authorization, wishLoader) {
 
         d('user: %s, %s', userId, wishId ? 'wish ' + wishId : 'all wishes');
 
-        foo(wishLoader, userId, wishId || null, function(error, result) {
+        query(wishLoader, userId, wishId || null, function(error, result) {
             if(error) return next(error);
 
             res.send(200, result);
@@ -28,12 +28,12 @@ module.exports = function (app, authorization, wishLoader) {
     });
 };
 
-function foo(wishLoader, userId, wishId, callback) {
+function query(wishLoader, userId, wishId, callback) {
     if (userId && wishId) {
-        wishLoader.loadWishesByUserIdWishId(userId, wishId, function (error, result) {
+        wishLoader.loadWishByUserIdWishId(userId, wishId, function (error, result) {
             if (error) return callback(error, null);
 
-            if(!result) return callback(error, []);
+            if(result.length === 0) return callback(new errors.NotFoundError('wish ' + wishId), null);
 
             callback(null, result);
         });

@@ -14,7 +14,7 @@ WishLoader.prototype.loadWishesByUserId = function(userId, callback) {
     this._query({user: userId}, callback);
 };
 
-WishLoader.prototype.loadWishesByUserIdWishId = function(userId, wishId, callback) {
+WishLoader.prototype.loadWishByUserIdWishId = function(userId, wishId, callback) {
     this._query({user: userId, _id: wishId}, callback);
 };
 
