@@ -2,10 +2,12 @@ var mongoose = require('mongoose');
 
 var configuration = require('./configuration');
 
-var db = mongoose.createConnection(configuration.database.host, configuration.database.database, configuration.database.port);
+module.exports = function(callback) {
+    var db = mongoose.createConnection(configuration.database.host, configuration.database.database, configuration.database.port);
 
-db.on('error', function(error) {
-    console.log('connection error:' + error.message);
-});
+    db.on('error', function(error) {
+        callback(error);
+    });
 
-module.exports = db;
+    db.once('open', callback);
+};

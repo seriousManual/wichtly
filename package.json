@@ -15,7 +15,8 @@
     "mongoose": "~3.6.17",
     "connect-mongo": "~0.3.3",
     "cloneextend": "0.0.3",
-    "depugger": "~0.2.0"
+    "depugger": "~0.2.0",
+    "seq": "~0.3.5"
   },
   "main": "./server.js",
   "keywords": [
