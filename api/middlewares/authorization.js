@@ -5,11 +5,13 @@ module.exports = function (tokenHandler) {
         var authToken = req.headers.wichtlyauth;
 
         if (!authToken) {
-            next(new errors.Unauthorized());
+            return next(new errors.Unauthorized());
         }
 
-        if (tokenHandler.validate(authToken)) {
-            //TODO: add user id to req
+        var validated = tokenHandler.validate(authToken);
+        if (validated) {
+            req.WICHTLY.user = validated.userId;
+
             return next();
         }
 

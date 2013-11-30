@@ -8,6 +8,7 @@ var TokenHandler = require('./authorization/TokenHandler');
 var UserLoader = require('./authorization/UserLoader');
 var WishLoader = require('./WishLoader');
 var Authorizationmiddleware = require('../middlewares/authorization');
+var InitMidleware = require('../middlewares/init');
 
 var authorizeRoute = require('./routes/authorize');
 var wishRoute = require('./routes/wish');
@@ -31,6 +32,8 @@ function install(app, callback) {
     var userLoader = new UserLoader();
     var wishLoader = new WishLoader();
     var authorizationMiddleware = Authorizationmiddleware(tokenHandler);
+
+    app.use(InitMidleware());
 
     authorizeRoute(app, tokenHandler, userLoader);
     wishRoute(app, authorizationMiddleware, wishLoader);

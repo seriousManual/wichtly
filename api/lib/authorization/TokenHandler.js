@@ -42,7 +42,10 @@ TokenHandler.prototype.validate = function (token, ttl) {
         d('timeout, timestamp: %d, ttl: %d', authTimestamp, ttl);
         return false;
     } else {
-        return true;
+        return {
+            userId: authUserId,
+            timeStamp: authTimestamp
+        };
     }
 };
 
