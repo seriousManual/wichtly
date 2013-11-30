@@ -5,7 +5,7 @@ module.exports = function (app, authorization, wishLoader) {
     app.get('/api/wish/:wishId?', authorization, function (req, res, next) {
         var wishId = req.params.wishId;
 
-        d(wishId ? 'wish ' + wishId : 'all wishes');
+        d('loading %s', wishId ? 'wish ' + wishId : 'all wishes');
 
         query(wishLoader, null, wishId || null, function(error, result) {
             if(error) return next(error);
@@ -18,7 +18,7 @@ module.exports = function (app, authorization, wishLoader) {
         var userId = req.params.userId;
         var wishId = req.params.wishId;
 
-        d('user: %s, %s', userId, wishId ? 'wish ' + wishId : 'all wishes');
+        d('loadin wish: user %s, %s', userId, wishId ? 'wish ' + wishId : 'all wishes');
 
         query(wishLoader, userId, wishId || null, function(error, result) {
             if(error) return next(error);
