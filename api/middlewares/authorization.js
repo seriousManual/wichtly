@@ -1,10 +1,15 @@
 var errors = require('../lib/errors');
 
-module.exports = function(tokenHandler) {
+module.exports = function (tokenHandler) {
     return function authorization(req, res, next) {
-        var authToken = req.headers['wichtlyAuth'];
+        var authToken = req.headers.wichtlyauth;
 
-        if(tokenHandler.validate(authToken)) {
+        if (!authToken) {
+            next(new errors.Unauthorized());
+        }
+
+        if (tokenHandler.validate(authToken)) {
+            //TODO: add user id to req
             return next();
         }
 

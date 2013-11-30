@@ -10,6 +10,8 @@ module.exports = {
     database: {
         host: 'pi',
         database: 'wichtly',
-        port: 27017
+        port: 27017,
+        user: '',
+        pass: ''
     }
 };

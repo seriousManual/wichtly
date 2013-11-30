@@ -5,6 +5,7 @@ var browserify = require('connect-browserify');
 
 var configuration = require('./api/lib/configuration');
 var bootStrap = require('./api/lib/Bootstrap');
+var d = require('debug')('wichtly');
 
 var app = express();
 app.use(express.cookieParser());
@@ -15,12 +16,12 @@ app.use(express.static(__dirname + '/app'));
 
 bootStrap(app, function (error) {
     if (error) {
-        console.log('wow, bad things happend: ', error);
+        d('bootstrap error: %s', error.message);
 
         process.exit(1);
     }
 
     app.listen(configuration.server.port);
 
-    console.log('listening to: ' + configuration.server.port);
+    d('listening to: %d', configuration.server.port);
 });

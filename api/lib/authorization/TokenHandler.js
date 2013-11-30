@@ -1,7 +1,9 @@
 var crypto = require('crypto');
 var util = require('util');
 
-var TOKEN_PATTERN = /(\d+)_(\d+)_([a-f0-9]+)/;
+var d = require('debug')('wichtly:tokenHandler');
+
+var TOKEN_PATTERN = /([a-f0-9]+)_(\d+)_([a-f0-9]+)/;
 
 function TokenHandler(secret, ttl) {
     this._secret = secret;
@@ -15,16 +17,19 @@ TokenHandler.prototype.generateToken = function(userId) {
 TokenHandler.prototype.validate = function (token, ttl) {
     var matches = token.match(TOKEN_PATTERN);
 
+    d('validating: %s', token);
+
     if (!matches) {
         return false;
     }
 
     var authUserId = matches[1];
-    var authTimestamp = parseInt(matches[2], 10);
+    var authTimestamp = matches[2];
 
     var genToken = this._generateToken(authUserId, authTimestamp);
 
     if (genToken !== token) {
+        d('no token match: %s <-> %s', genToken, token);
         return false;
     }
 
@@ -33,11 +38,16 @@ TokenHandler.prototype.validate = function (token, ttl) {
         ttl = this._ttl;
     }
 
-    return now < authTimestamp + ttl;
+    if(now > authTimestamp + ttl) {
+        d('timeout, timestamp: %d, ttl: %d', authTimestamp, ttl);
+        return false;
+    } else {
+        return true;
+    }
 };
 
 TokenHandler.prototype._generateToken = function (userId, timeStamp) {
-    var publicPart = util.format('%d_%d', userId, timeStamp);
+    var publicPart = util.format('%s_%s', userId, timeStamp);
 
     var shasum = crypto.createHash('sha1');
     shasum.update(util.format('%s_%s', publicPart, this._secret));

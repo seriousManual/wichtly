@@ -1,30 +1,69 @@
-var authorization = require('../../middlewares/authorization');
+var errors = require('../errors');
+var d = require('debug')('wichtly:wish');
 
-var data = [];
+module.exports = function (app, authorization, wishLoader) {
+    app.get('/api/wish/:wishId?', authorization, function (req, res, next) {
+        var wishId = req.params.wishId;
 
-module.exports = function(app) {
-    app.get('/api/wish', authorization, function(req, res, next) {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.write(JSON.stringify(data));
-        res.end();
+        d(wishId ? 'wish ' + wishId : 'all wishes');
+
+        foo(wishLoader, null, wishId || null, function(error, result) {
+            if(error) return next(error);
+
+            res.send(200, result);
+        });
     });
 
-    app.get('/api/wish/:id', authorization, function(req, res, next) {
-        var retData = data.filter(function(wish) { return wish.id == req.params.id; })[0];
+    app.get('/api/user/:userId/wish/:wishId?', authorization, function (req, res, next) {
+        var userId = req.params.userId;
+        var wishId = req.params.wishId;
 
-        if(retData) {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.write(JSON.stringify(retData));
-        } else {
-            res.writeHead(404, { 'Content-Type': 'application/json' });
-        }
+        d('user: %s, %s', userId, wishId ? 'wish ' + wishId : 'all wishes');
 
-        res.end();
+        foo(wishLoader, userId, wishId || null, function(error, result) {
+            if(error) return next(error);
+
+            res.send(200, result);
+        });
     });
 };
 
-// GET /api/wish            retrieve all wishes
-// GET /api/wish/:id        get distinct wish
-// POST /api/wish/:id       edit distinct wish
-// PUT /api/wish            create wish
-// DELETE /api/wish/:id     delete distinct wish
+function foo(wishLoader, userId, wishId, callback) {
+    if (userId && wishId) {
+        wishLoader.loadWishesByUserIdWishId(userId, wishId, function (error, result) {
+            if (error) return callback(error, null);
+
+            if(!result) return callback(error, []);
+
+            callback(null, result);
+        });
+    } else if (userId) {
+        wishLoader.loadWishesByUserId(userId, function (error, result) {
+            if (error) return callback(error, null);
+
+            if(!result) return callback(error, []);
+
+            callback(null, result);
+        });
+    } else if (wishId) {
+        wishLoader.loadWishByWishId(wishId, function (error, result) {
+            if (error) return callback(error, null);
+
+            if(result.length === 0) return callback(new errors.NotFoundError('wish ' + wishId), null);
+
+            callback(null, result);
+        });
+    } else {
+        wishLoader.loadWishes(function (error, result) {
+            if (error) return callback(error, null);
+
+            if(!result) return callback(error, []);
+
+            callback(null, result);
+        });
+    }
+
+}
+
+// GET /api/wish/:wishId?                    get all wishes or wish :wishId
+// GET /api/user/:userId/wish/:wishId?       get distinct wish :wishId of user :userId or all wishes of :userId

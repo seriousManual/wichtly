@@ -8,6 +8,11 @@ function BaseError(mssg, statusCode) {
 }
 util.inherits(BaseError, Error);
 
+function BadRequestError(message) {
+    BaseError.call(this, 'Bad request: ' + message, 400);
+}
+util.inherits(BadRequestError, BaseError);
+
 function MethodNotSupportedError(method) {
     BaseError.call(this, 'Method not supported: ' + method, 405);
 }
@@ -35,5 +40,6 @@ module.exports = {
     MethodNotSupportedError: MethodNotSupportedError,
     NotFoundError: NotFoundError,
     InternalServerError: InternalServerError,
-    Unauthorized: Unauthorized
+    Unauthorized: Unauthorized,
+    BadRequestError: BadRequestError
 };

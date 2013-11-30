@@ -1,17 +1,29 @@
 var errors = require('../errors');
+var d = require('debug')('wichtly:authorize');
 
-module.exports = function(app, tokenHandler, userLoader) {
+module.exports = function (app, tokenHandler, userLoader) {
 
-    app.post('/api/authenticate', function(req, res, next) {
+    app.post('/api/authenticate', function (req, res, next) {
         var userName = req.body.userName;
         var password = req.body.password;
 
-        userLoader.loadUser(userName, password, function(error, user) {
-            if(error || !error) {
+        d('credentials: %s, %s', userName, password);
+
+        if (!userName || !password) {
+            return next(new errors.BadRequestError('userName and/or password missing'));
+        }
+
+        userLoader.loadUser(userName, password, function (error, user) {
+            if (error || !user) {
+                d('failed');
                 return next(new errors.Unauthorized());
             }
 
-            res.send({token: tokenHandler.generateToken(user.id)});
+            var token = tokenHandler.generateToken(user._id);
+
+            d('success: %s', token);
+
+            res.send({token:token});
         });
     });
 

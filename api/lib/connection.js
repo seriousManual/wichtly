@@ -1,13 +1,22 @@
+var util = require('util');
+
 var mongoose = require('mongoose');
 
 var configuration = require('./configuration');
 
 module.exports = function(callback) {
-    var db = mongoose.createConnection(configuration.database.host, configuration.database.database, configuration.database.port);
+    var uri = util.format('mongodb://%s/%s', configuration.database.host, configuration.database.database);
 
-    db.on('error', function(error) {
+    mongoose.connect(uri, {
+        user: configuration.database.user,
+        pass: configuration.database.password
+    });
+
+    var connection = mongoose.connection;
+
+    connection.on('error', function(error) {
         callback(error);
     });
 
-    db.once('open', callback);
+    connection.once('open', callback);
 };
