@@ -31,8 +31,8 @@ function InternalServerError() {
 util.inherits(InternalServerError, BaseError);
 
 
-function Unauthorized() {
-    BaseError.call(this, 'Unauthorized', 401);
+function Unauthorized(message) {
+    BaseError.call(this, 'Unauthorized' + (message ? ': ' + message : ''), 401);
 }
 util.inherits(Unauthorized, BaseError);
 

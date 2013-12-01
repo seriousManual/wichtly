@@ -1,9 +1,9 @@
 var errors = require('../lib/errors');
 
 module.exports = function (tokenHandler) {
-    var authorization = function(req, res, next) {
-        validate(req, tokenHandler, function(error, validated) {
-            if(error) return next(error);
+    var authorization = function (req, res, next) {
+        validate(req, tokenHandler, function (error, validated) {
+            if (error) return next(error);
 
             req.WICHTLY.user = validated.userId;
 
@@ -11,14 +11,14 @@ module.exports = function (tokenHandler) {
         });
     };
 
-    authorization.sameUser = function(req, res, next) {
+    authorization.sameUser = function (req, res, next) {
         var targetedUser = req.params.userId;
 
-        validate(req, tokenHandler, function(error, validated) {
-            if(error) return next(error);
+        validate(req, tokenHandler, function (error, validated) {
+            if (error) return next(error);
 
-            if(targetedUser !== validated.userId) {
-                return next(new errors.Unauthorized());
+            if (targetedUser !== validated.userId) {
+                return next(new errors.Unauthorized('not your domain'));
             }
 
             req.WICHTLY.user = validated.userId;

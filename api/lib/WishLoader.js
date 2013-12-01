@@ -3,19 +3,19 @@ var Wish = require('./models/Wish');
 function WishLoader() {}
 
 WishLoader.prototype.loadWishes = function(callback) {
-    this._query({}, callback);
+    this._query({}, true, callback);
 };
 
 WishLoader.prototype.loadWishByWishId = function(wishId, callback) {
-    this._query({_id: wishId}, callback);
+    this._query({_id: wishId}, false, callback);
 };
 
 WishLoader.prototype.loadWishesByUserId = function(userId, callback) {
-    this._query({owner: userId}, callback);
+    this._query({owner: userId}, true, callback);
 };
 
 WishLoader.prototype.loadWishByUserIdWishId = function(userId, wishId, callback) {
-    this._query({owner: userId, _id: wishId}, callback);
+    this._query({owner: userId, _id: wishId}, false, callback);
 };
 
 WishLoader.prototype.createWish = function(title, owner, description, callback) {
@@ -52,23 +52,27 @@ WishLoader.prototype.removeWish = function(wishId, callback) {
     });
 };
 
-WishLoader.prototype._query = function(query, callback) {
+WishLoader.prototype._query = function(query, listQuery, callback) {
     var that = this;
     Wish
             .find(query)
             .populate('owner', 'userName')
             .exec(function(error, result) {
-                that._handle(error, result, callback);
+                that._handle(error, result, listQuery, callback);
             });
 };
 
-WishLoader.prototype._handle = function(error, result, callback) {
+WishLoader.prototype._handle = function(error, result, listQuery, callback) {
     if(error) {
         return callback(error, null);
     }
 
     if(!result) {
         return callback(null, null);
+    }
+
+    if(!listQuery) {
+        result = result[0];
     }
 
     callback(null, result);

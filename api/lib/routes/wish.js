@@ -54,7 +54,7 @@ module.exports = function (app, authorization, wishLoader) {
 
             if(!updatedWish) return next(new errors.NotFoundError('wish ' + wishId));
 
-            res.send(204, updatedWish);
+            res.send(200, updatedWish);
         });
     });
 
@@ -78,38 +78,36 @@ module.exports = function (app, authorization, wishLoader) {
 function query(wishLoader, userId, wishId, callback) {
     if (userId && wishId) {
         wishLoader.loadWishByUserIdWishId(userId, wishId, function (error, result) {
-            if (error) return callback(error, null);
-
-            if (result.length === 0) return callback(new errors.NotFoundError('wish ' + wishId), null);
-
-            callback(null, result[0]);
+            _handle(error, result, true, callback);
         });
     } else if (userId) {
         wishLoader.loadWishesByUserId(userId, function (error, result) {
-            if (error) return callback(error, null);
-
-            if (!result) return callback(error, []);
-
-            callback(null, result);
+            _handle(error, result, true, callback);
         });
     } else if (wishId) {
         wishLoader.loadWishByWishId(wishId, function (error, result) {
-            if (error) return callback(error, null);
-
-            if (result.length === 0) return callback(new errors.NotFoundError('wish ' + wishId), null);
-
-            callback(null, result[0]);
+            _handle(error, result, true, callback);
         });
     } else {
         wishLoader.loadWishes(function (error, result) {
-            if (error) return callback(error, null);
-
-            if (!result) return callback(error, []);
-
-            callback(null, result);
+            _handle(error, result, true, callback);
         });
     }
 
+}
+
+function _handle(error, result, listQuery, callback) {
+    if (error) return callback(error, null);
+
+    if (result.length === 0) {
+        if(listQuery) {
+            return callback(error, []);
+        } else {
+            return callback(new errors.NotFoundError('wish'), null);
+        }
+    }
+
+    callback(null, result);
 }
 
 // GET /api/wish/:wishId?                    get all wishes or wish :wishId
