@@ -4,12 +4,12 @@
         <h2>{{person.name}}</h2>
 
         <div ng-repeat="wish in person.wishes">
-            <h3>{{wish.headline}}</h3>
-            <p>{{wish.text}}</p>
+            <h3>{{wish.title}}</h3>
+            <p>{{wish.description}}</p>
 
-            <button value="edit" ng-click="edit(wish.id)">edit</button>
-            <button value="delete" ng-click="delete(wish.id)">delete</button>
-            <button value="bought" ng-click="bought(wish.id)">bought</button>
+            <button value="edit" ng-click="edit(wish._id)">edit</button>
+            <button value="delete" ng-click="delete(wish._id)">delete</button>
+            <button value="bought" ng-click="bought(wish._id)">bought</button>
         </div>
     </div>
 </div>

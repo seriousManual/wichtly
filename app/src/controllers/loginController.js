@@ -1,13 +1,33 @@
-function loginController($scope, $location, messageService) {
-    $scope.login = function() {
-        if(Math.random() < 0.3) {
-            messageService.error('Error!', 'Wrong credentials!');
-        } else if(Math.random() < 0.6) {
-            messageService.ok('OK!', 'Login successful.');
-        } else if(Math.random() < 1) {
-            messageService.info('FYI.', 'Breaking the law is illegal.');
-        }
+var REDIR_TO = '/wish';
+
+function loginController($scope, $http, $location, messageService, authService) {
+    if(authService.getToken()) {
+        $location.path(REDIR_TO);
     }
+
+    $scope.login = function () {
+        var userName = $scope.userName;
+        var password = $scope.password;
+
+        if (!userName || !password) {
+            return messageService.error('credentials missing!');
+        }
+
+        $http.post('/api/authenticate', { userName:userName, password:password })
+                .success(handle)
+                .error(handle);
+
+        function handle(data, status) {
+            if(status !== 200) {
+                messageService.error('sorry, something bad happend');
+            } else {
+                authService.setToken(data.token);
+                authService.setUserId(data.userId);
+
+                $location.path(REDIR_TO);
+            }
+        }
+    };
 }
 
 module.exports = loginController;

@@ -1,6 +1,7 @@
 <div id="changeView" ng-controller="detailController">
     <h1>Detail</h1>
-    Headline:<input type="text" name="headline" value="{{headline}}"><br>
-    Text: <textarea name="text">{{text}}</textarea><br>
+    Headline:<input type="text" name="title" value="" ng-model="title"><br>
+    Text: <textarea name="text" ng-model="description"></textarea><br>
+
     <input type="button" value="save" ng-click="save()">
 </div>

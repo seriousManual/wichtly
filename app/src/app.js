@@ -4,7 +4,7 @@ var routes = require('./routes');
 var services = require('./services');
 var directives = require('./directives');
 
-var app = angular.module('wichtly', [], function($routeProvider) {
+var app = angular.module('wichtly', ['ngCookies'], function($routeProvider) {
     routes.install($routeProvider);
 });
 

@@ -7,11 +7,13 @@ var connection = require('./connection');
 var TokenHandler = require('./authorization/TokenHandler');
 var UserLoader = require('./authorization/UserLoader');
 var WishLoader = require('./WishLoader');
+var OrganisationLoader = require('./OrganisationLoader');
 var Authorizationmiddleware = require('../middlewares/authorization');
 var InitMidleware = require('../middlewares/init');
 
 var authorizeRoute = require('./routes/authorize');
 var wishRoute = require('./routes/wish');
+var organisationRoute = require('./routes/organisation');
 var errors = require('./errors');
 var d = debug('wichtly:errorhandler');
 
@@ -31,12 +33,14 @@ function install(app, callback) {
     var tokenHandler = new TokenHandler(configuration.authorization.secret);
     var userLoader = new UserLoader();
     var wishLoader = new WishLoader();
+    var organisationLoader = new OrganisationLoader();
     var authorizationMiddleware = Authorizationmiddleware(tokenHandler);
 
     app.use(InitMidleware());
 
     authorizeRoute(app, tokenHandler, userLoader);
     wishRoute(app, authorizationMiddleware, wishLoader);
+    organisationRoute(app, authorizationMiddleware, organisationLoader);
 
     app.use(function errorHandler(error, req, res, next) {
         d('error encountered: %s', error.message);
