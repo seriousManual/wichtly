@@ -23,7 +23,7 @@ module.exports = function (app, tokenHandler, userLoader) {
 
             d('success: %s', token);
 
-            res.send(200, {token:token, userId: user._id});
+            res.send(200, {token:token, userId: user._id, organisation: user.organisation});
         });
     });
 

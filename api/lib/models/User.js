@@ -5,7 +5,8 @@ var userSchema = mongoose.Schema({
     userName: { type: String, required: true, index: { unique: true } },
     mail: { type: String, required: true, index: { unique: true } },
     password: { type: String, required: true },
-    wishes: [ WishSchema ]
+    wishes: [ WishSchema ],
+    organisation: { type: mongoose.Schema.Types.ObjectId, ref: 'Organisation' }
 });
 
 module.exports = {

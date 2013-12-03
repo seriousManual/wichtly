@@ -23,6 +23,7 @@ function loginController($scope, $http, $location, messageService, authService) 
             } else {
                 authService.setToken(data.token);
                 authService.setUserId(data.userId);
+                authService.setOrganisation(data.organisation);
 
                 $location.path(REDIR_TO);
             }

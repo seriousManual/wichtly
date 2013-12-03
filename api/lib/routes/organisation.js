@@ -1,5 +1,5 @@
 var errors = require('../errors');
-var Organisation = require('../models/Organisation');
+var User = require('../models/User').model;
 
 var d = require('debug')('wichtly:organisation');
 
@@ -40,17 +40,24 @@ module.exports = function (app, authorization, organisationLoader) {
         organisationLoader.loadOrganisation(organisationId, function (error, organisation) {
             if (error) return next(error);
 
-            organisation.members.push({
-                userName: userName,
-                mail: mail,
-                password: password
-            });
+            var newUser = new User({userName: userName, mail: mail, password: password, organisation: organisationId});
 
-            res.send(201, organisation);
+            newUser.save(function(error, user) {
+                if(error) return next(error);
+
+                organisation.members.push(user._id);
+
+                organisation.save(function(error, organisation) {
+                    if(error) return next(error);
+
+                    res.send(201, organisation);
+                });
+            });
         });
     });
 };
 
 //GET /api/organisation/:organisationId
 //GET /api/organisation/:organisationId/user
+//PUT /api/organisation/:organisationId/user
 //PUT /api/organisation/:organisationId/wish/
