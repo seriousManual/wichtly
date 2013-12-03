@@ -5,7 +5,7 @@ var configuration = require('./configuration');
 var connection = require('./connection');
 
 var TokenHandler = require('./authorization/TokenHandler');
-var UserLoader = require('./authorization/UserLoader');
+var UserLoader = require('./UserLoader');
 var WishLoader = require('./WishLoader');
 var OrganisationLoader = require('./OrganisationLoader');
 var Authorizationmiddleware = require('../middlewares/authorization');
@@ -44,6 +44,7 @@ function install(app, callback) {
 
     app.use(function errorHandler(error, req, res, next) {
         d('error encountered: %s', error.message);
+        d(error);
 
         if(!error.statusCode || !error.message) {
             error = new errors.InternalServerError();

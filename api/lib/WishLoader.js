@@ -1,81 +1,81 @@
-var Wish = require('./models/Wish');
+var UserModel = require('./models/User').model;
 
-function WishLoader() {}
+var errors = require('./errors');
 
-WishLoader.prototype.loadWishes = function(callback) {
-    this._query({}, true, callback);
-};
+function WishLoader() {
+}
 
-WishLoader.prototype.loadWishByWishId = function(wishId, callback) {
-    this._query({_id: wishId}, false, callback);
-};
+WishLoader.prototype.loadWishesByUserId = function (userId, callback) {
+    UserModel.findById(userId, function (error, user) {
+        if (error) return callback(error);
 
-WishLoader.prototype.loadWishesByUserId = function(userId, callback) {
-    this._query({owner: userId}, true, callback);
-};
+        if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
-WishLoader.prototype.loadWishByUserIdWishId = function(userId, wishId, callback) {
-    this._query({owner: userId, _id: wishId}, false, callback);
-};
-
-WishLoader.prototype.createWish = function(title, owner, description, callback) {
-    var newWish = new Wish({title: title, owner: owner, description: description});
-
-    newWish.save(function(error, wish) {
-        if(error) return callback(error, null);
-
-        callback(null, wish);
+        callback(null, user.wishes);
     });
 };
 
-WishLoader.prototype.updateWish = function(wishId, title, description, bought, callback) {
-    var update = {};
+WishLoader.prototype.loadWishByUserIdWishId = function (userId, wishId, callback) {
+    UserModel.findById(userId, function (error, user) {
+        if (error) return callback(error);
 
-    if(title !== undefined) update.title = title;
-    if(description !== undefined) update.description = description;
-    if(bought !== undefined) update.bought = !!bought;
+        if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
-    Wish.findByIdAndUpdate(wishId, update, callback);
+        callback(null, user.wishes.id(wishId));
+    });
 };
 
-WishLoader.prototype.removeWish = function(wishId, callback) {
-    Wish.findById(wishId, function(error, loadedWish) {
-        if(error) return callback(error, null);
+WishLoader.prototype.createWish = function (userId, title, description, callback) {
+    UserModel.findById(userId, function (error, user) {
+        if (error) return callback(error);
 
-        if(!loadedWish) return callback(null, false);
+        if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
-        loadedWish.remove(function(error) {
-            if(error) return callback(error, null);
-
-            callback(null, true);
+        user.wishes.push({
+            title:title,
+            description:description
         });
+
+        user.save(callback);
     });
 };
 
-WishLoader.prototype._query = function(query, listQuery, callback) {
-    var that = this;
-    Wish
-            .find(query)
-            .populate('owner', 'userName')
-            .exec(function(error, result) {
-                that._handle(error, result, listQuery, callback);
-            });
+WishLoader.prototype.updateWish = function (userId, wishId, title, description, bought, callback) {
+    UserModel.findById(userId, function (error, user) {
+        if (error) return callback(error);
+
+        if (!user) return callback(new errors.NotFoundError('user ' + userId));
+
+        var wish = user.wishes.id(wishId);
+
+        if (wish) {
+            if (title !== null) wish.title = title;
+            if (description !== null) wish.description = description;
+            if (bought !== null) wish.bought = !!bought;
+
+            user.save(callback);
+        } else {
+            callback(new errors.NotFoundError('wish ' + wishId));
+        }
+    });
 };
 
-WishLoader.prototype._handle = function(error, result, listQuery, callback) {
-    if(error) {
-        return callback(error, null);
-    }
+WishLoader.prototype.removeWish = function (userId, wishId, callback) {
+    UserModel.findById(userId, function (error, user) {
+        if (error) return callback(error, null);
 
-    if(!result) {
-        return callback(null, null);
-    }
+        if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
-    if(!listQuery) {
-        result = result[0];
-    }
+        var wish = user.wishes.id(wishId);
 
-    callback(null, result);
+        if (wish) {
+            wish.remove();
+
+            user.save(callback);
+        } else {
+            callback(new errors.NotFoundException('wish ' + wishId));
+        }
+    });
 };
 
 module.exports = WishLoader;

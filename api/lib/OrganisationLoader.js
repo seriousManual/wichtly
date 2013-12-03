@@ -1,31 +1,41 @@
-var Organisation = require('./models/Organisation');
-var Wish = require('./models/Wish');
+var Organisation = require('./models/Organisation').model;
+var errors = require('./errors');
 
-function OrganisationLoader(wishLoader) {}
+function OrganisationLoader() {
+}
 
 OrganisationLoader.prototype.loadOrganisation = function (organisationId, callback) {
-    var that = this;
-
     Organisation
-            .findById(organisationId)
-            .populate('creator', 'userName')
-            .populate('members', 'userName wishes')
-            .populate('members.wishes')
-            .exec(function (error, result) {
-                that._handle(error, result, callback);
-            });
+        .findById(organisationId)
+        .populate('creator', 'userName')
+        .populate('members')
+        .exec(function (error, organisation) {
+            if (error) return callback(error, null);
+
+            if (!organisation) return callback(new errors.NotFoundError('organisation ' + organisationId), null);
+
+            callback(null, organisation);
+        });
 };
 
-OrganisationLoader.prototype._handle = function (error, organisation, callback) {
-    if (error) {
-        return callback(error, null);
-    }
+OrganisationLoader.prototype.createOrganisation = function (name, callback) {
+    var tmp = new Organisation({name: name});
 
-    if (!organisation) {
-        return callback(null, null);
-    }
+    tmp.save(callback);
+};
 
-    callback(null, organisation);
+OrganisationLoader.prototype.addUser = function (organisationId, user, callback) {
+    Organisation
+        .findById(organisationId)
+        .exec(function (error, organisation) {
+            if(error) return callback(error, null);
+
+            if (!organisation) return callback(new errors.NotFoundError('organisation ' + organisationId), null);
+
+            organisation.members.push(user);
+
+            organisation.save(callback);
+        });
 };
 
 module.exports = OrganisationLoader;
