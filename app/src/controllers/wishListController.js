@@ -3,7 +3,8 @@ var util = require('util');
 function wishList($scope, $http, $location, authService, messageService) {
     retrieve($http, authService, handle);
 
-    $scope.edit = function (wishId) {
+    $scope.edit = function (userId, wishId) {
+        console.log( arguments );
         $location.path('/wish/' + wishId);
     };
 

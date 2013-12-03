@@ -1,4 +1,4 @@
-var REDIR_TO = '/wish';
+var REDIR_TO = '/list';
 
 function loginController($scope, $http, $location, messageService, authService) {
     if(authService.getToken()) {

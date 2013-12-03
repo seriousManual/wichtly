@@ -1,7 +1,9 @@
 var util = require('util');
 
 function detailController($scope, $http, $routeParams, $location, authService, messageService) {
-    $http.get('/api/wish/' + $routeParams.id, {headers:{wichtlyauth: authService.getToken()}})
+    var url = util.format('/api/user/%s/wish/%s', authService.getUserId(), $routeParams.id);
+
+    $http.get(url, {headers:{wichtlyauth: authService.getToken()}})
             .success(function(data) {
                 $scope.title = data.title;
                 $scope.description = data.description;
@@ -9,7 +11,7 @@ function detailController($scope, $http, $routeParams, $location, authService, m
             .error(function() {
                 messageService.error('unknown error');
 
-                $location.path('./wish');
+                $location.path('/list');
             });
 
     $scope.save = function() {
@@ -22,12 +24,12 @@ function detailController($scope, $http, $routeParams, $location, authService, m
                 .success(function() {
                     messageService.info('saved successfully');
 
-                    $location.path('/wish');
+                    $location.path('/list');
                 })
                 .error(function() {
                     messageService.error('on error occured while saving');
 
-                    $location.path('/wish');
+                    $location.path('/list');
                 });
     }
 }

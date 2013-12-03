@@ -21,7 +21,11 @@ WishLoader.prototype.loadWishByUserIdWishId = function (userId, wishId, callback
 
         if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
-        callback(null, user.wishes.id(wishId));
+        var wish = user.wishes.id(wishId);
+
+        if(!wish) return callback(new errors.NotFoundError('wish ' + wishId));
+
+        callback(null, wish);
     });
 };
 

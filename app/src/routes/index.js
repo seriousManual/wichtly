@@ -4,7 +4,7 @@ function install($routeProvider) {
         controller: 'loginController'
     });
 
-    $routeProvider.when('/wish', {
+    $routeProvider.when('/list', {
         templateUrl: '/partials/listView.html',
         controller: 'wishListController'
     });
