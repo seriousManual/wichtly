@@ -4,8 +4,7 @@ function wishList($scope, $http, $location, authService, messageService) {
     retrieve($http, authService, handle);
 
     $scope.edit = function (userId, wishId) {
-        console.log( arguments );
-        $location.path('/wish/' + wishId);
+        $location.path(util.format('/wish/%s', wishId));
     };
 
     $scope.delete = function (wishId) {
@@ -14,13 +13,28 @@ function wishList($scope, $http, $location, authService, messageService) {
         $http.delete(url, {headers: {wichtlyauth: authService.getToken()}})
             .success(function (data) {
                 retrieve($http, authService, handle);
+            })
+            .error(function() {
+                messageService.error('sorry...');
             });
+    };
+
+    $scope.addWish = function(userId) {
+        $location.path(util.format('/user/%s/wish/create', userId));
     };
 
     function handle(error, result) {
         if (error) {
             return messageService.error(error.message);
         }
+
+        result.forEach(function(user) {
+            var isOwn = user._id === authService.getUserId();
+
+            user.wishes.forEach(function(wish) {
+                wish.isOwn = isOwn;
+            });
+        });
 
         $scope.grouped = result;
     }

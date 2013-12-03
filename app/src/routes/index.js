@@ -14,6 +14,11 @@ function install($routeProvider) {
         controller: 'detailController'
     });
 
+    $routeProvider.when('/user/:userId/wish/create', {
+        templateUrl: '/partials/changeView.html',
+        controller: 'newController'
+    });
+
     $routeProvider.otherwise({
         templateUrl: '/partials/loginView.html',
         controller: 'detailController'

@@ -2,7 +2,7 @@ var util = require('util');
 
 function detailController($scope, $http, $routeParams, $location, authService, messageService) {
     var url = util.format('/api/user/%s/wish/%s', authService.getUserId(), $routeParams.id);
-
+console.log( authService.getUserId(), $routeParams.id, url );
     $http.get(url, {headers:{wichtlyauth: authService.getToken()}})
             .success(function(data) {
                 $scope.title = data.title;
