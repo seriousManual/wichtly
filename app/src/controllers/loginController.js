@@ -21,9 +21,7 @@ function loginController($scope, $http, $location, messageService, authService) 
             if(status !== 200) {
                 messageService.error('sorry, something bad happend');
             } else {
-                authService.setToken(data.token);
-                authService.setUserId(data.userId);
-                authService.setOrganisation(data.organisation);
+                authService.setData(data);
 
                 $location.path(REDIR_TO);
             }

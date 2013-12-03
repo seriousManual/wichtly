@@ -26,9 +26,7 @@ function wishList($scope, $http, $location, authService, messageService) {
 }
 
 function retrieve($http, authService, callback) {
-    var organisation = '529e2414a25914001a000002';
-
-    var url = util.format('/api/organisation/%s/user', organisation);
+    var url = util.format('/api/organisation/%s/user', authService.getOrganisation());
 
     $http.get(url, {headers: {wichtlyauth: authService.getToken()}})
         .success(function (data) {

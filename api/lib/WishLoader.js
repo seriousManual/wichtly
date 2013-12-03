@@ -73,7 +73,7 @@ WishLoader.prototype.removeWish = function (userId, wishId, callback) {
 
             user.save(callback);
         } else {
-            callback(new errors.NotFoundException('wish ' + wishId));
+            callback(new errors.NotFoundError('wish ' + wishId));
         }
     });
 };
