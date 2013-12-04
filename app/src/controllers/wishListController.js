@@ -7,10 +7,22 @@ function wishList($scope, $http, $location, authService, messageService) {
         $location.path(util.format('/wish/%s', wishId));
     };
 
-    $scope.delete = function (wishId) {
+    $scope.deleteWish = function (wishId) {
         var url = util.format('/api/user/%s/wish/%s', authService.getUserId(), wishId);
 
         $http.delete(url, {headers: {wichtlyauth: authService.getToken()}})
+            .success(function (data) {
+                retrieve($http, authService, handle);
+            })
+            .error(function() {
+                messageService.error('sorry...');
+            });
+    };
+
+    $scope.bought = function (wishId) {
+        var url = util.format('/api/user/%s/wish/%s', authService.getUserId(), wishId);
+
+        $http.post(url, {bought:true}, {headers: {wichtlyauth: authService.getToken()}})
             .success(function (data) {
                 retrieve($http, authService, handle);
             })

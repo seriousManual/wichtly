@@ -44,7 +44,7 @@ module.exports = function (app, authorization, wishLoader) {
     app.post('/api/user/:userId/wish/:wishId', authorization.sameUser, function (req, res, next) {
         var title = req.body.title || null;
         var description = req.body.description || null;
-        var bought = req.body.bought || null;
+        var bought = req.body.bought !== undefined ? !!req.body.bought : null;
         var wishId = req.params.wishId;
         var userId = req.params.userId;
 

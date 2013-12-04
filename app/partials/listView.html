@@ -10,7 +10,7 @@
 
             <div ng-show="wish.isOwn">
                 <button value="edit" ng-click="edit(person._id, wish._id)">edit</button>
-                <button value="delete" ng-click="delete(person._id, wish._id)">delete</button>
+                <button value="delete" ng-click="deleteWish(person._id, wish._id)">delete</button>
             </div>
 
             <div ng-hide="wish.isOwn">
