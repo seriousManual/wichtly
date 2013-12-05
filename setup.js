@@ -17,7 +17,7 @@ var connection = mongoose.connection;
 
 connection.on('error', function(error) {
     console.log(error);
-    process.exit();
+    process.exit(1);
 });
 
 connection.once('open', callback);
@@ -39,21 +39,35 @@ function callback() {
 
     seq()
         .seq(function() {
+            console.log('removing Users');
+            User.remove({}, this)
+        })
+        .seq(function() {
+            console.log('removing Organisations');
+            Organisation.remove({}, this)
+        })
+        .seq(function() {
+            console.log('saving user1');
             tmpUser1.save(this);
         })
         .seq(function() {
+            console.log('saving user2');
             tmpUser2.save(this);
         })
         .seq(function() {
+            console.log('saving user3');
             tmpUser3.save(this);
         })
         .seq(function() {
+            console.log('saving user4');
             tmpUser4.save(this);
         })
         .seq(function() {
+            console.log('saving user5');
             tmpUser5.save(this);
         })
         .seq(function() {
+            console.log('saving organisation');
             tmpOrganisation.save(this);
         })
         .seq(function() {
@@ -63,6 +77,7 @@ function callback() {
             tmpOrganisation.members.push(tmpUser4);
             tmpOrganisation.members.push(tmpUser5);
 
+            console.log('saving organisation');
             tmpOrganisation.save(this);
         })
         .seq(end)
@@ -70,7 +85,7 @@ function callback() {
 }
 
 function end() {
-    console.log(arguments);
+    console.log('done!');
 
-    process.exit();
+    process.exit(0);
 }
