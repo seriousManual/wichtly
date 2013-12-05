@@ -23,8 +23,8 @@ LocationService.prototype.gotoWish = function (wishId) {
     this._redirect(util.format('/wish/%s', wishId))
 };
 
-LocationService.prototype._redirect = function(url) {
-    this._analytics.push(['_trackPageview', url]);
+LocationService.prototype._redirect = function(path) {
+    this._analytics.push(['_trackPageview', path]);
 
     this._$location.path(path);
 };
