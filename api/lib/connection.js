@@ -12,7 +12,7 @@ module.exports = function(callback) {
     if(configuration.database.uri) {
         uri = configuration.database.uri;
     } else {
-        uri = util.format('mongodb://%s:%s@%s:%d/%s', configuration.database.user, configuration.database.password, configuration.database.host, configuration.database.port, configuration.database.database);
+        uri = util.format('mongodb://%s:%s@%s:%d/%s', configuration.database.user, configuration.database.pass, configuration.database.host, configuration.database.port, configuration.database.database);
     }
 
     d('using uri %s', uri);
