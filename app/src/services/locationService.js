@@ -4,24 +4,27 @@ var angular = require('../lib/angular');
 
 function LocationService($location) {
     this._$location = $location;
+    this._analytics = _gaq || [];
 }
 
 LocationService.prototype.gotoList = function () {
-    this._$location.path('/list');
+    this._redirect('/list');
 };
 
 LocationService.prototype.gotoLogin = function () {
-    this._$location.path('/');
+    this._redirect('/');
 };
 
 LocationService.prototype.gotoCreateWish = function (userId) {
-    var path = util.format('/user/%s/wish/create', userId);
-
-    this._$location.path(path);
+    this._redirect(util.format('/user/%s/wish/create', userId));
 };
 
 LocationService.prototype.gotoWish = function (wishId) {
-    var path = util.format('/wish/%s', wishId);
+    this._redirect(util.format('/wish/%s', wishId))
+};
+
+LocationService.prototype._redirect = function(url) {
+    this._analytics.push(['_trackPageview', url]);
 
     this._$location.path(path);
 };
