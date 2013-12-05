@@ -19,10 +19,17 @@ function install($routeProvider) {
         controller: 'newController'
     });
 
-    $routeProvider.otherwise({
-        templateUrl: '/partials/loginView.html',
-        controller: 'detailController'
+    $routeProvider.when('/about', {
+        templateUrl: '/partials/aboutView.html',
+        controller: 'aboutController'
     });
+
+    $routeProvider.when('/logout', {
+        templateUrl: '/partials/loginView.html',
+        controller: 'logoutController'
+    });
+
+    $routeProvider.otherwise({ redirectTo: '/' });
 }
 
 module.exports.install = install;

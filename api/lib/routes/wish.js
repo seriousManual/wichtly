@@ -41,14 +41,20 @@ module.exports = function (app, authorization, wishLoader) {
         });
     });
 
-    app.post('/api/user/:userId/wish/:wishId', authorization.sameUser, function (req, res, next) {
+    app.post('/api/user/:userId/wish/:wishId', authorization, function (req, res, next) {
         var title = req.body.title || null;
         var description = req.body.description || null;
-        var bought = req.body.bought || null;
+        var bought = req.body.bought !== undefined ? !!req.body.bought : null;
         var wishId = req.params.wishId;
         var userId = req.params.userId;
 
         d('updating wish: id: %s, title: %s, description: %s, bought: %s', wishId, title, description, bought);
+
+        if(title || description) {
+            if(userId !== req.WICHTLY.user) {
+                return next(new errors.Unauthorized('not your domain, sorry'));
+            }
+        }
 
         wishLoader.updateWish(userId, wishId, title, description, bought, function(error) {
             if(error) return next(error);

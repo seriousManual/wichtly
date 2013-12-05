@@ -54,6 +54,14 @@ AuthService.prototype.getOrganisation = function() {
     return this._organisation;
 };
 
+AuthService.prototype.flush = function() {
+    this._organisation = null;
+    this._userId = null;
+    this._token = null;
+
+    delete this._$cookies[AUTH_DATA_KEY];
+};
+
 module.exports.install = function(app) {
     app.service('authService', AuthService);
 };
