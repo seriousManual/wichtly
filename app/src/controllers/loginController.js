@@ -1,8 +1,6 @@
-var REDIR_TO = '/list';
-
-function loginController($scope, $http, $location, messageService, authService) {
+function loginController($scope, $http, locationService, messageService, authService) {
     if(authService.getToken()) {
-        $location.path(REDIR_TO);
+        locationService.gotoList();
     }
 
     $scope.login = function () {
@@ -23,7 +21,7 @@ function loginController($scope, $http, $location, messageService, authService) 
             } else {
                 authService.setData(data);
 
-                $location.path(REDIR_TO);
+                locationService.gotoList();
             }
         }
     };

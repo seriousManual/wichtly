@@ -1,7 +1,7 @@
-function logoutController($scope, $location, authService) {
+function logoutController($scope, locationService, authService) {
     authService.flush();
 
-    $location.path('/');
+    locationService.gotoLogin();
 }
 
 module.exports = logoutController;

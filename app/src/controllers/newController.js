@@ -1,6 +1,6 @@
 var util = require('util');
 
-function newController($scope, $http, $routeParams, $location, authService, messageService) {
+function newController($scope, $http, $routeParams, locationService, authService, messageService) {
     $scope.save = function() {
         var userId = $routeParams.userId;
         var title = $scope.title;
@@ -12,17 +12,17 @@ function newController($scope, $http, $routeParams, $location, authService, mess
             .success(function() {
                 messageService.info('sucessfully created!');
 
-                $location.path('/list');
+                locationService.gotoList();
             })
             .error(function() {
                 messageService.error('on error occured while saving');
 
-                $location.path('/list');
+                locationService.gotoList();
             });
     };
 
     $scope.back = function() {
-        $location.path('/list');
+        locationService.gotoList();
     };
 }
 

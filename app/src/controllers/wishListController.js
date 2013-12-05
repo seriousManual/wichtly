@@ -1,14 +1,10 @@
 var util = require('util');
 
-function wishList($scope, $http, $location, authService, messageService) {
+function wishList($scope, $http, locationService, authService, messageService) {
     retrieve($http, authService, handle);
 
-    $scope.foo = function() {
-        messageService.error('foo');
-    }
-
     $scope.edit = function (userId, wishId) {
-        $location.path(util.format('/wish/%s', wishId));
+        locationService.gotoWish(wishId);
     };
 
     $scope.deleteWish = function (userId, wishId) {
@@ -36,7 +32,7 @@ function wishList($scope, $http, $location, authService, messageService) {
     };
 
     $scope.addWish = function (userId) {
-        $location.path(util.format('/user/%s/wish/create', userId));
+        locationService.gotoCreateWish(userId);
     };
 
     function handle(error, result) {
