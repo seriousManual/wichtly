@@ -1,3 +1,6 @@
 .idea
 node_modules
+app/js/app.js
+
 config/user.*
+config/production.js
