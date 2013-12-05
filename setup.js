@@ -21,7 +21,7 @@ function callback(error) {
     var tmpUser4 = new User({userName: 'Rita Ernst', mail:'rita@rr93.de', password: 'uuii14'});
     var tmpUser5 = new User({userName: 'Friedhelm Ernst', mail:'mail@friedhelmernst.de', password: 'zetee11'});
 
-    var tmpOrganisation = new Organisation({name: 'fooOrganisation', creator: tmpUser1._id});
+    var tmpOrganisation = new Organisation({name: 'Ernest family', creator: tmpUser1._id});
 
     tmpUser1.organisation = tmpOrganisation._id;
     tmpUser2.organisation = tmpOrganisation._id;
