@@ -7,7 +7,7 @@ function wishList($scope, $http, $location, authService, messageService) {
         $location.path(util.format('/wish/%s', wishId));
     };
 
-    $scope.delete = function (wishId) {
+    $scope.delete = function (userId, wishId) {
         var url = util.format('/api/user/%s/wish/%s', authService.getUserId(), wishId);
 
         $http.delete(url, {headers: {wichtlyauth: authService.getToken()}})

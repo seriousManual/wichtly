@@ -19,7 +19,11 @@ function newController($scope, $http, $routeParams, $location, authService, mess
 
                 $location.path('/list');
             });
-    }
+    };
+
+    $scope.back = function() {
+        $location.path('/list');
+    };
 }
 
 module.exports = newController;
