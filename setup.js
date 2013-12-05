@@ -3,26 +3,18 @@ var mongoose = require('mongoose');
 var seq = require('seq');
 
 var configuration = require('./api/lib/configuration');
+var connection = require('./api/lib/connection');
 var Organisation = require('./api/lib/models/Organisation').model;
 var User = require('./api/lib/models/User').model;
 
-var uri = util.format('mongodb://%s/%s', configuration.database.host, configuration.database.database);
+connection(callback);
 
-mongoose.connect(uri, {
-    user: configuration.database.user,
-    pass: configuration.database.password
-});
+function callback(error) {
+    if(error) {
+        console.log(error);
+        process.exit(1);
+    }
 
-var connection = mongoose.connection;
-
-connection.on('error', function(error) {
-    console.log(error);
-    process.exit(1);
-});
-
-connection.once('open', callback);
-
-function callback() {
     var tmpUser1 = new User({userName: 'Manuel Ernst', mail:'mail@manuel-ernst.de', password: 'foobar'});
     var tmpUser2 = new User({userName: 'Miriam Ernst', mail:'miriam-ernst@rr93.de', password: 'asdf'});
     var tmpUser3 = new User({userName: 'Dominik Ernst', mail:'dominik.ernst@gmx.de', password: 'jkloe'});

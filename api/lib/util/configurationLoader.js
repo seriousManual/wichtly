@@ -36,7 +36,6 @@ function load(baseDir, cliArgs) {
         configuration = ce.extend(configuration, require(pathEnvironment));
     }
 
-
     //we're checking if there's a config file named after the current user, but only in development. file name pattern: user.{userName}.js
     if(environment === KEY_DEVELOPMENT) {
         if(fs.existsSync(pathUser)) {
