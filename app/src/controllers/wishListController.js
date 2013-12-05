@@ -52,11 +52,28 @@ function wishList($scope, $http, locationService, authService, messageService) {
     }
 
     $scope.reworkText = function (text) {
-        var urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-        var lineBreakPattern = /\n/g;
+        var linebreakPattern = /[\n]/g;
+        var urlPattern = /(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])/ig;
 
-        text = text.replace(urlPattern, "<a href='$1'>$1</a>");
-        text = text.replace(lineBreakPattern, '<br>');
+        text = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        text = text.replace(linebreakPattern, '<br>');
+
+        var res = text.match(urlPattern);
+
+        if (!res) return text;
+
+        res.forEach(function (url) {
+            var insertUrl, newUrl;
+            if (url.length > 40) {
+                insertUrl = url.substr(0, 20) + '[...]' + url.substr(-20);
+            } else {
+                insertUrl = url;
+            }
+
+            var replaceText = '<a href="' + newUrl + '">' + insertUrl + '</a>';
+
+            text = text.replace(url, replaceText);
+        });
 
         return text;
     };
