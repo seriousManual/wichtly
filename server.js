@@ -11,7 +11,11 @@ var app = express();
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 
-app.use('/js/app.js', browserify.serve({ entry:path.join(__dirname, 'app/src/app.js') }));
+
+app.configure('development', function(){
+    app.use('/js/app.js', browserify.serve({ entry:path.join(__dirname, 'app/src/app.js') }));
+});
+
 app.use(express.static(__dirname + '/app'));
 
 bootStrap(app, function (error) {
