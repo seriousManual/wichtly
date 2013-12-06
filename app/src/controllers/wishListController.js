@@ -63,16 +63,14 @@ function wishList($scope, $http, locationService, authService, messageService) {
         if (!res) return text;
 
         res.forEach(function (url) {
-            var insertUrl, newUrl;
+            var insertUrl;
             if (url.length > 40) {
                 insertUrl = url.substr(0, 20) + '[...]' + url.substr(-20);
             } else {
                 insertUrl = url;
             }
 
-            var replaceText = '<a href="' + newUrl + '">' + insertUrl + '</a>';
-
-            text = text.replace(url, replaceText);
+            text = text.replace(url, '<a href="' + url + '">' + insertUrl + '</a>');
         });
 
         return text;
