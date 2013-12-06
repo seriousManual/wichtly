@@ -27,7 +27,7 @@
     "postinstall": "./node_modules/.bin/browserify -e app/src/app.js -o app/js/app.js"
   },
   "engines": {
-    "node": ">=0.8"
+    "node": ">=0.10"
   },
   "subdomain": "wichtly"
 }
