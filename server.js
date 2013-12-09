@@ -12,6 +12,12 @@ var app = express();
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 
+app.use(function(req, res, next) {
+    logger.info({mod: 'main', evt: 'request', path: req.path});
+
+    next();
+});
+
 app.configure('development', function(){
     app.use('/js/app.js', browserify.serve({ entry:path.join(__dirname, 'app/src/app.js') }));
 });
@@ -21,7 +27,7 @@ app.use(express.static(__dirname + '/app'));
 bootStrap(app, function (error) {
     if (error) {
         d('bootstrap error: %s', error.message);
-        logger.info({evt: 'errorHandler', mssg: error.message});
+        logger.error({evt: 'errorHandler', mssg: error.message});
 
         process.exit(1);
     }

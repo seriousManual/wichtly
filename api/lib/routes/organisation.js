@@ -1,15 +1,17 @@
 var logger = require('../logger');
+var routeLogger = require('../../middlewares/routeLogger');
+
 var errors = require('../errors');
 var User = require('../models/User').model;
 
 var d = require('debug')('wichtly:organisation');
 
 module.exports = function (app, authorization, organisationLoader) {
-    app.get('/api/organisation/:organisationId', authorization, function (req, res, next) {
+    app.get('/api/organisation/:organisationId', authorization, routeLogger('get', '/organisation/:organisationId'), function (req, res, next) {
         var organisationId = req.params.organisationId;
 
         d('loading organisation %s', organisationId);
-        logger.info({evt: 'organisationLoad', organisationId: organisationId});
+        logger.info({mod: 'organisation', evt: 'organisationLoad', organisationId: organisationId});
 
         organisationLoader.loadOrganisation(organisationId, function (error, result) {
             if (error) return next(error);
@@ -18,11 +20,11 @@ module.exports = function (app, authorization, organisationLoader) {
         });
     });
 
-    app.get('/api/organisation/:organisationId/user', authorization, function (req, res, next) {
+    app.get('/api/organisation/:organisationId/user', authorization, routeLogger('get', '/organisation/:organisationId/user'), function (req, res, next) {
         var organisationId = req.params.organisationId;
 
         d('loading organisation %s', organisationId);
-        logger.info({evt: 'organisationLoad', organisationId: organisationId});
+        logger.info({mod: 'organisation', evt: 'organisationLoad', organisationId: organisationId});
 
         organisationLoader.loadOrganisation(organisationId, function (error, result) {
             if (error) return next(error);
@@ -31,7 +33,7 @@ module.exports = function (app, authorization, organisationLoader) {
         });
     });
 
-    app.put('/api/organisation/:organisationId/user', authorization, function (req, res, next) {
+    app.put('/api/organisation/:organisationId/user', authorization, routeLogger('put', '/organisation/:organisationId/user'), function (req, res, next) {
         var organisationId = req.params.organisationId;
 
         var userName = req.body.userName;
@@ -39,20 +41,20 @@ module.exports = function (app, authorization, organisationLoader) {
         var password = req.body.password;
 
         d('adding user');
-        logger.info({evt: 'organisationUserCreate', organisationId: organisationId});
+        logger.info({mod: 'organisation', evt: 'organisationUserCreate', organisationId: organisationId});
 
         organisationLoader.loadOrganisation(organisationId, function (error, organisation) {
             if (error) return next(error);
 
             var newUser = new User({userName: userName, mail: mail, password: password, organisation: organisationId});
 
-            newUser.save(function(error, user) {
-                if(error) return next(error);
+            newUser.save(function (error, user) {
+                if (error) return next(error);
 
                 organisation.members.push(user._id);
 
-                organisation.save(function(error, organisation) {
-                    if(error) return next(error);
+                organisation.save(function (error, organisation) {
+                    if (error) return next(error);
 
                     res.send(201, organisation);
                 });
