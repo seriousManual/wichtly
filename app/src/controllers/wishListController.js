@@ -53,7 +53,7 @@ function wishList($scope, $http, locationService, authService, messageService) {
             return messageService.error(error.message);
         }
 
-        result.forEach(function (user) {
+        result.members.forEach(function (user) {
             var isOwn = user._id === authService.getUserId();
 
             user.wishes.forEach(function (wish) {
@@ -62,7 +62,8 @@ function wishList($scope, $http, locationService, authService, messageService) {
             });
         });
 
-        $scope.grouped = result;
+        $scope.organisationName = result.name;
+        $scope.grouped = result.members;
     }
 
     $scope.reworkText = function (text) {
@@ -92,7 +93,7 @@ function wishList($scope, $http, locationService, authService, messageService) {
 }
 
 function retrieve($http, authService, callback) {
-    var url = util.format('/api/organisation/%s/user', authService.getOrganisation());
+    var url = util.format('/api/organisation/%s', authService.getOrganisation());
 
     $http.get(url, {headers: {wichtlyauth: authService.getToken()}})
         .success(function (data) {
