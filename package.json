@@ -18,7 +18,8 @@
     "seq": "~0.3.5",
     "debug": "~0.7.4",
     "winston": "~0.7.2",
-    "winston-splnkstrm": "~0.1.0"
+    "winston-splnkstrm": "~0.1.0",
+    "hirestime": "~0.2.2"
   },
   "main": "./server.js",
   "keywords": [
