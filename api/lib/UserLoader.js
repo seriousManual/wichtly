@@ -16,4 +16,8 @@ UserLoader.prototype.loadUser = function(userName, password, callback) {
     });
 };
 
+UserLoader.prototype.loadUserById = function(id, callback) {
+    User.findById(id, callback);
+};
+
 module.exports = UserLoader;

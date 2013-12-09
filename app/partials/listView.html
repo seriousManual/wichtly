@@ -8,20 +8,23 @@
         <span class="clearfix"></span>
 
         <div ng-repeat="wish in person.wishes" class="wish">
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong>{{wish.title}}</strong></div>
+            <div class="panel panel-default" ng-class="{proposedBy: wish.proposedBy}">
+                <div class="panel-heading">
+                    <strong>{{wish.title}}</strong>
+                    <span ng-show="wish.proposedBy" class="proposedByText">Vorgeschlagen von: {{wish.proposedBy}}</span>
+                </div>
                 <div class="panel-body">
                     <div class="description" ng-bind-html-unsafe='reworkText(wish.description)'></div>
 
                     <div ng-show="wish.isOwn">
+                        <button type="button" class="btn btn-primary" ng-show="wish.proposedBy" ng-click="acknowledge(person._id, wish._id)">Vorschlag bestätigen</button>
+
                         <button type="button" class="btn btn-primary" ng-click="edit(person._id, wish._id)">Ändern</button>
                         <button type="button" class="btn btn-danger" ng-click="deleteWish(person._id, wish._id)">Löschen</button>
                     </div>
 
                     <div ng-hide="wish.isOwn">
-                        <div ng-hide="wish.bought">
-                            <button type="button" class="btn btn-primary" ng-click="bought(person._id, wish._id)">Gekauft</button>
-                        </div>
+                        <button type="button" class="btn btn-primary" ng-hide="wish.bought" ng-click="bought(person._id, wish._id)">Gekauft</button>
 
                         <div ng-show="wish.bought" class="bought">Gekauft!</div>
                     </div>

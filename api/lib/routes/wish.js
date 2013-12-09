@@ -36,11 +36,12 @@ module.exports = function (app, authorization, wishLoader) {
         var title = req.body.title;
         var description = req.body.description;
         var userId = req.params.userId;
+        var creator = req.WICHTLY.user.userName;
 
         d('creating wish: user %s, title: %s, description: %s', userId, title, description);
         logger.info({mod: 'wish', evt: 'wishCreate', user: userId});
 
-        wishLoader.createWish(userId, title, description, function (error, user) {
+        wishLoader.createWish(userId, title, description, creator, function (error, user) {
             if (error) return next(error);
 
             res.send(201);
@@ -51,19 +52,20 @@ module.exports = function (app, authorization, wishLoader) {
         var title = req.body.title || null;
         var description = req.body.description || null;
         var bought = req.body.bought !== undefined ? !!req.body.bought : null;
+        var creator = req.body.creator !== undefined ? req.body.creator : null;
         var wishId = req.params.wishId;
         var userId = req.params.userId;
 
-        d('updating wish: id: %s, title: %s, description: %s, bought: %s', wishId, title, description, bought);
+        d('updating wish: id: %s, title: %s, description: %s, bought: %s, creator: %s', wishId, title, description, bought, creator);
         logger.info({mod: 'wish', evt: 'wishEdit', user: userId, wishId: wishId});
 
         if (title || description) {
-            if (userId !== req.WICHTLY.user) {
+            if (userId !== req.WICHTLY.user._id) {
                 return next(new errors.Unauthorized('not your domain, sorry'));
             }
         }
 
-        wishLoader.updateWish(userId, wishId, title, description, bought, function (error) {
+        wishLoader.updateWish(userId, wishId, title, description, bought, creator, function (error) {
             if (error) return next(error);
 
             res.send(200);

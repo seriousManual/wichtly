@@ -26,6 +26,20 @@ body {
     float:left;
 }
 
+.wish .proposedBy {
+    border:1px solid #ffaeae;
+}
+
+.wish .proposedByText {
+    color: #d9534f;
+    font-size:10px;
+    line-height:20px;
+}
+
+.wish strong {
+    line-height:20px;
+}
+
 .user .newWish {
     display:inline-block;
     margin-left:10px;

@@ -31,6 +31,19 @@ function wishList($scope, $http, locationService, authService, messageService) {
             });
     };
 
+    $scope.acknowledge = function (userId, wishId) {
+        var url = util.format('/api/user/%s/wish/%s', userId, wishId);
+
+        //TODO: bad hack, we should set the actual creators name here..........
+        $http.post(url, {creator: ''}, {headers: {wichtlyauth: authService.getToken()}})
+            .success(function (data) {
+                retrieve($http, authService, handle);
+            })
+            .error(function () {
+                messageService.error('sorry...');
+            });
+    };
+
     $scope.addWish = function (userId) {
         locationService.gotoCreateWish(userId);
     };
@@ -44,6 +57,7 @@ function wishList($scope, $http, locationService, authService, messageService) {
             var isOwn = user._id === authService.getUserId();
 
             user.wishes.forEach(function (wish) {
+                wish.proposedBy = wish.creator && wish.creator !== user.userName ? wish.creator : '';
                 wish.isOwn = isOwn;
             });
         });

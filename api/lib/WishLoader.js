@@ -29,7 +29,7 @@ WishLoader.prototype.loadWishByUserIdWishId = function (userId, wishId, callback
     });
 };
 
-WishLoader.prototype.createWish = function (userId, title, description, callback) {
+WishLoader.prototype.createWish = function (userId, title, description, creator, callback) {
     UserModel.findById(userId, function (error, user) {
         if (error) return callback(error);
 
@@ -37,14 +37,15 @@ WishLoader.prototype.createWish = function (userId, title, description, callback
 
         user.wishes.push({
             title:title,
-            description:description
+            description:description,
+            creator: creator
         });
 
         user.save(callback);
     });
 };
 
-WishLoader.prototype.updateWish = function (userId, wishId, title, description, bought, callback) {
+WishLoader.prototype.updateWish = function (userId, wishId, title, description, bought, creator, callback) {
     UserModel.findById(userId, function (error, user) {
         if (error) return callback(error);
 
@@ -56,6 +57,7 @@ WishLoader.prototype.updateWish = function (userId, wishId, title, description, 
             if (title !== null) wish.title = title;
             if (description !== null) wish.description = description;
             if (bought !== null) wish.bought = !!bought;
+            if (creator !== null) wish.creator = creator;
 
             user.save(callback);
         } else {

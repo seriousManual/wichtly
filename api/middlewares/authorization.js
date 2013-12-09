@@ -1,11 +1,11 @@
 var errors = require('../lib/errors');
 
-module.exports = function (tokenHandler) {
+module.exports = function (tokenHandler, userLoader) {
     var authorization = function (req, res, next) {
-        validate(req, tokenHandler, function (error, validated) {
+        validate(req, function (error, user) {
             if (error) return next(error);
 
-            req.WICHTLY.user = validated.userId;
+            req.WICHTLY.user = user;
 
             next();
         });
@@ -14,33 +14,39 @@ module.exports = function (tokenHandler) {
     authorization.sameUser = function (req, res, next) {
         var targetedUser = req.params.userId;
 
-        validate(req, tokenHandler, function (error, validated) {
+        validate(req, function (error, user) {
             if (error) return next(error);
 
-            if (targetedUser !== validated.userId) {
+            if (targetedUser != user._id) {
                 return next(new errors.Unauthorized('not your domain'));
             }
 
-            req.WICHTLY.user = validated.userId;
+            req.WICHTLY.user = user;
 
             next();
         });
     };
 
+    function validate(req, callback) {
+        var authToken = req.headers.wichtlyauth;
+
+        if (!authToken) {
+            return callback(new errors.Unauthorized());
+        }
+
+        var validated = tokenHandler.validate(authToken);
+        if (validated) {
+            userLoader.loadUserById(validated.userId, function (error, user) {
+                if (error) return callback(error);
+
+                if (!user) return callback(null, null);
+
+                callback(null, user);
+            });
+        } else {
+            callback(new errors.Unauthorized());
+        }
+    }
+
     return authorization;
 };
-
-function validate(req, tokenHandler, callback) {
-    var authToken = req.headers.wichtlyauth;
-
-    if (!authToken) {
-        return callback(new errors.Unauthorized());
-    }
-
-    var validated = tokenHandler.validate(authToken);
-    if (validated) {
-        return callback(null, validated);
-    }
-
-    callback(new errors.Unauthorized());
-}

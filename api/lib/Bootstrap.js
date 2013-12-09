@@ -34,7 +34,7 @@ function install(app, callback) {
     var userLoader = new UserLoader();
     var wishLoader = new WishLoader();
     var organisationLoader = new OrganisationLoader();
-    var authorizationMiddleware = Authorizationmiddleware(tokenHandler);
+    var authorizationMiddleware = Authorizationmiddleware(tokenHandler, userLoader);
 
     app.use(InitMidleware());
 
