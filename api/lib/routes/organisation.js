@@ -1,3 +1,4 @@
+var logger = require('../logger');
 var errors = require('../errors');
 var User = require('../models/User').model;
 
@@ -8,6 +9,7 @@ module.exports = function (app, authorization, organisationLoader) {
         var organisationId = req.params.organisationId;
 
         d('loading organisation %s', organisationId);
+        logger.info({evt: 'organisationLoad', organisationId: organisationId});
 
         organisationLoader.loadOrganisation(organisationId, function (error, result) {
             if (error) return next(error);
@@ -20,6 +22,7 @@ module.exports = function (app, authorization, organisationLoader) {
         var organisationId = req.params.organisationId;
 
         d('loading organisation %s', organisationId);
+        logger.info({evt: 'organisationLoad', organisationId: organisationId});
 
         organisationLoader.loadOrganisation(organisationId, function (error, result) {
             if (error) return next(error);
@@ -36,6 +39,7 @@ module.exports = function (app, authorization, organisationLoader) {
         var password = req.body.password;
 
         d('adding user');
+        logger.info({evt: 'organisationUserCreate', organisationId: organisationId});
 
         organisationLoader.loadOrganisation(organisationId, function (error, organisation) {
             if (error) return next(error);

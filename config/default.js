@@ -1,4 +1,9 @@
 module.exports = {
+    logging: {
+        transport: 'Console',
+        options: {}
+    },
+
     authorization: {
         secret: 'foo'
     },

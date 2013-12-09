@@ -1,3 +1,4 @@
+var logger = require('../logger');
 var errors = require('../errors');
 var d = require('debug')('wichtly:wish');
 
@@ -6,6 +7,7 @@ module.exports = function (app, authorization, wishLoader) {
         var userId = req.params.userId;
 
         d('loading wishes: user %s', userId);
+        logger.info({evt: 'wishLoad', user: userId});
 
         wishLoader.loadWishesByUserId(userId, function (error, result) {
             if(error) return next(error);
@@ -19,6 +21,7 @@ module.exports = function (app, authorization, wishLoader) {
         var wishId = req.params.wishId;
 
         d('loading wish: user %s, wishId %s', userId, wishId);
+        logger.info({evt: 'wishLoad', user: userId, wishId: wishId});
 
         wishLoader.loadWishByUserIdWishId(userId, wishId, function (error, result) {
             if(error) return next(new errors.NotFoundError('wish ' + wishId));
@@ -33,6 +36,7 @@ module.exports = function (app, authorization, wishLoader) {
         var userId = req.params.userId;
 
         d('creating wish: user %s, title: %s, description: %s', userId, title, description);
+        logger.info({evt: 'wishCreate', user: userId});
 
         wishLoader.createWish(userId, title, description, function(error, user) {
             if(error) return next(error);
@@ -49,6 +53,7 @@ module.exports = function (app, authorization, wishLoader) {
         var userId = req.params.userId;
 
         d('updating wish: id: %s, title: %s, description: %s, bought: %s', wishId, title, description, bought);
+        logger.info({evt: 'wishEdit', user: userId, wishId: wishId});
 
         if(title || description) {
             if(userId !== req.WICHTLY.user) {
@@ -68,6 +73,7 @@ module.exports = function (app, authorization, wishLoader) {
         var userId = req.params.userId;
 
         d('deleting wish: %s', wishId);
+        logger.info({evt: 'wishDelete', user: userId, wishId: wishId});
 
         wishLoader.removeWish(userId, wishId, function(error, result) {
             if(error) return next(error);
