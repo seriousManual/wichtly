@@ -48,7 +48,9 @@ function wishList($scope, $http, locationService, authService, messageService) {
         locationService.gotoCreateWish(userId);
     };
 
-    $scope.addComment = function(userId, wishId, text) {
+    $scope.addComment = function (userId, wishId, text) {
+        if (!text) return;
+
         var url = util.format('/api/user/%s/wish/%s/comment', userId, wishId);
 
         $http.put(url, {text: text}, {headers: {wichtlyauth: authService.getToken()}})
