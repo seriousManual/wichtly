@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="commentForm">
-                        <input type="text" class="form-control input-small" placeholder="schreibe einen kommentar... (Enter zum Speichern)" ng-enter="addComment(person._id, wish._id, this.commentText)" ng-model="commentText">
+                        <input type="text" class="form-control input-small" placeholder="schreibe einen kommentar... (Enter zum Speichern)" ng-enter-debounce="true" ng-enter="addComment(person._id, wish._id, this.commentText)" ng-model="commentText">
                     </div>
                 </div>
             </div>
