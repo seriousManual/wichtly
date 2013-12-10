@@ -60,7 +60,7 @@ module.exports = function (app, authorization, wishLoader) {
         logger.info({mod: 'wish', evt: 'wishEdit', user: userId, wishId: wishId});
 
         if (title || description) {
-            if (userId !== req.WICHTLY.user._id) {
+            if (userId != req.WICHTLY.user._id) {
                 return next(new errors.Unauthorized('not your domain, sorry'));
             }
         }
