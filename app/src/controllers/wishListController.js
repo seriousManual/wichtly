@@ -66,6 +66,7 @@ function wishList($scope, $http, locationService, authService, messageService) {
         $scope.grouped = result.members;
     }
 
+    //TODO: this sanitation step has to be cleaned up and refactored
     $scope.reworkText = function (text) {
         if (!text) return text;
 
