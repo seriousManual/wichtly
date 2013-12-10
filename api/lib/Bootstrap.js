@@ -2,6 +2,7 @@ var seq = require('seq');
 var debug = require('debug');
 
 var configuration = require('./configuration');
+var logger = require('./logger');
 var connection = require('./connection');
 
 var TokenHandler = require('./authorization/TokenHandler');
@@ -17,16 +18,16 @@ var organisationRoute = require('./routes/organisation');
 var errors = require('./errors');
 var d = debug('wichtly:errorhandler');
 
-module.exports = function(app, callback) {
+module.exports = function (app, callback) {
     seq()
-            .seq(function() {
-                connection(this);
-            })
-            .seq(function() {
-                install(app, this);
-            })
-            .seq(callback)
-            .catch(callback);
+        .seq(function () {
+            connection(this);
+        })
+        .seq(function () {
+            install(app, this);
+        })
+        .seq(callback)
+        .catch(callback);
 };
 
 function install(app, callback) {
@@ -46,7 +47,9 @@ function install(app, callback) {
         d('error encountered: %s', error.message);
         d(error);
 
-        if(!error.statusCode || !error.message) {
+        logger.error({mod: 'errorHandler', evt: 'error', mssg: error.message});
+
+        if (!error.statusCode || !error.message) {
             error = new errors.InternalServerError();
         }
 
