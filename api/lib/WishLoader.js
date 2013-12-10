@@ -91,7 +91,7 @@ WishLoader.prototype.addComment = function (userId, wishId, creatorName, text, c
         if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
         var wish = user.wishes.id(wishId);
-console.log( text, creatorName );
+
         if (wish) {
             wish.comments.push({
                 creatorName: creatorName,
