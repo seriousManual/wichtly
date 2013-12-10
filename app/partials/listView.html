@@ -16,17 +16,31 @@
                 <div class="panel-body">
                     <div class="description" ng-bind-html-unsafe='reworkText(wish.description)'></div>
 
-                    <div ng-show="wish.isOwn">
-                        <button type="button" class="btn btn-primary" ng-show="wish.proposedBy" ng-click="acknowledge(person._id, wish._id)">Vorschlag bestätigen</button>
+                    <div class="buttons">
+                        <div ng-show="wish.isOwn">
+                            <button type="button" class="btn btn-primary" ng-show="wish.proposedBy" ng-click="acknowledge(person._id, wish._id)">Vorschlag bestätigen</button>
 
-                        <button type="button" class="btn btn-primary" ng-click="edit(person._id, wish._id)">Ändern</button>
-                        <button type="button" class="btn btn-danger" ng-click="deleteWish(person._id, wish._id)">Löschen</button>
+                            <button type="button" class="btn btn-primary" ng-click="edit(person._id, wish._id)">Ändern</button>
+                            <button type="button" class="btn btn-danger" ng-click="deleteWish(person._id, wish._id)">Löschen</button>
+                        </div>
+
+                        <div ng-hide="wish.isOwn">
+                            <button type="button" class="btn btn-primary" ng-hide="wish.bought" ng-click="bought(person._id, wish._id)">Gekauft</button>
+
+                            <div ng-show="wish.bought" class="bought">Gekauft!</div>
+                        </div>
                     </div>
 
-                    <div ng-hide="wish.isOwn">
-                        <button type="button" class="btn btn-primary" ng-hide="wish.bought" ng-click="bought(person._id, wish._id)">Gekauft</button>
+                    <div class="comments panel" ng-show="wish.comments.length > 0">
+                        <h3>Kommentare</h3>
+                        <div class="comment clearfix" ng-repeat="comment in wish.comments">
+                            <div class="commentCreatorName">{{comment.creatorName}}</div>
+                            <div class="commentText">{{comment.text}}</div>
+                        </div>
+                    </div>
 
-                        <div ng-show="wish.bought" class="bought">Gekauft!</div>
+                    <div class="commentForm">
+                        <input type="text" class="form-control input-small" placeholder="schreibe einen kommentar... (Enter zum Speichern)" ng-enter="addComment(person._id, wish._id, 'foo')" ng-model="commentText">
                     </div>
                 </div>
             </div>

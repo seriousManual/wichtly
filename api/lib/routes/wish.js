@@ -85,10 +85,28 @@ module.exports = function (app, authorization, wishLoader) {
             res.send(204);
         });
     });
+
+    app.put('/api/user/:userId/wish/:wishId/comment', authorization, routeLogger('put', '/user/:userId/wish/:wishId/comment'), function (req, res, next) {
+        var wishId = req.params.wishId;
+        var userId = req.params.userId;
+
+        var text = req.body.text;
+        var creatorName = req.WICHTLY.user.userName;
+
+        d('adding comment to wish: %s', wishId);
+        logger.info({mod: 'wish', evt: 'commentAdd', user: userId, wishId: wishId});
+
+        wishLoader.addComment(userId, wishId, creatorName, text, function (error, result) {
+            if (error) return next(error);
+
+            res.send(201);
+        });
+    });
 };
 
-// GET    /api/user/:userId/wish               get all wishes of user :userId
-// GET    /api/user/:userId/wish/:wishId       get distinct wish :wishId of user :userId
-// PUT    /api/user/:userId/wish               create wish for :userId
-// POST   /api/user/:userId/wish/:wishId       update wish
-// DELETE /api/user/:userId/wish/:wishId       delete wish
+// GET    /api/user/:userId/wish                  get all wishes of user :userId
+// GET    /api/user/:userId/wish/:wishId          get distinct wish :wishId of user :userId
+// PUT    /api/user/:userId/wish                  create wish for :userId
+// POST   /api/user/:userId/wish/:wishId          update wish
+// DELETE /api/user/:userId/wish/:wishId          delete wish
+// PUT    /api/user/:userId/wish/:wishId/comment  create comment
