@@ -40,6 +40,36 @@ body {
     line-height:20px;
 }
 
+.wish .comments {
+}
+
+.wish .comments h3 {
+    font-size:14px;
+    font-weight:bold;
+}
+
+.wish .buttons {
+    margin-bottom:15px;
+}
+
+.wish .comments .comment {
+    margin-bottom:8px;
+}
+
+.wish .comments .comment .commentCreatorName {
+    color:#333;
+    font-weight:bold;
+    font-size:12px;
+}
+
+.wish .comments .comment .commentText {
+    font-size:12px;
+}
+
+.wish .commentForm {
+
+}
+
 .user .newWish {
     display:inline-block;
     margin-left:10px;

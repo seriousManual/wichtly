@@ -84,4 +84,25 @@ WishLoader.prototype.removeWish = function (userId, wishId, callback) {
     });
 };
 
+WishLoader.prototype.addComment = function (userId, wishId, creatorName, text, callback) {
+    UserModel.findById(userId, function (error, user) {
+        if (error) return callback(error, null);
+
+        if (!user) return callback(new errors.NotFoundError('user ' + userId));
+
+        var wish = user.wishes.id(wishId);
+
+        if (wish) {
+            wish.comments.push({
+                creatorName: creatorName,
+                text: text
+            });
+
+            user.save(callback);
+        } else {
+            callback(new errors.NotFoundError('wish ' + wishId));
+        }
+    });
+};
+
 module.exports = WishLoader;

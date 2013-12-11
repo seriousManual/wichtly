@@ -1,7 +1,7 @@
 {
   "name": "wichtly",
   "description": "wicht utlitiy",
-  "version": "0.5.4",
+  "version": "0.6.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/zaphod1984/wichtly"
@@ -18,7 +18,7 @@
     "debug": "~0.7.4",
     "winston": "~0.7.2",
     "winston-splnkstrm": "~0.1.0",
-    "hirestime": "~0.2.2"
+    "hirestime": "~0.2.3"
   },
   "main": "./server.js",
   "keywords": [

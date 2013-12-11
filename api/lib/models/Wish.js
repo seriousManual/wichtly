@@ -6,7 +6,12 @@ var wishSchema = Schema({
     description:    { type: String },
     bought:         { type: Boolean, default: false },
     createDate:     { type: Date, default: Date.now },
-    creator:        { type: String, default: '' }
+    creator:        { type: String, default: '' },
+    comments:       [ {
+        creatorName: { type: String },
+        text: { type: String },
+        createDate: { type: Date, default: Date.now }
+    }]
 });
 
 module.exports = {
