@@ -35,7 +35,7 @@ function detailController($scope, $http, $routeParams, locationService, authServ
 
                 locationService.gotoList();
             });
-    }
+    };
 }
 
 module.exports = detailController;
