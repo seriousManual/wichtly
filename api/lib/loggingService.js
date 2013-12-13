@@ -20,7 +20,7 @@ LoggingService.prototype.logComment = function (creatorName, creatorId, wishId, 
     this._logComment('commentOnWish', creatorName, creatorId, wishId, wishOwnerId, true, callback);
 };
 
-LoggingService.prototype._logComment = function(commentLogKind, userId, creatorName, creatorId, wishId, callback) {
+LoggingService.prototype._logComment = function(commentLogKind, creatorId, creatorName, wishId, wishOwnerId, callback) {
     var that = this;
 
     //get all comments to the wish
@@ -32,7 +32,7 @@ LoggingService.prototype._logComment = function(commentLogKind, userId, creatorN
     });
 };
 
-LoggingService.prototype._log = function (kind, userId, creatorName, creatrId, wishId, logToOrganisation, callback) {
+LoggingService.prototype._log = function (kind, userId, creatorName, creatroId, wishId, logToOrganisation, callback) {
 
 };
 
