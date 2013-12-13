@@ -19,7 +19,7 @@ module.exports = function (app, tokenHandler, userLoader) {
         userLoader.loadUser(userName, password, function (error, user) {
             if (error || !user) {
                 d('failed');
-                logger.info({mod: 'authorize', evt: 'login', state: 'failed'});
+                logger.info({mod: 'authorize', evt: 'login', state: 'failed', userName: userName});
 
                 return next(new errors.Unauthorized());
             }
@@ -27,7 +27,7 @@ module.exports = function (app, tokenHandler, userLoader) {
             var token = tokenHandler.generateToken(user._id);
 
             d('success: %s', token);
-            logger.info({mod: 'authorize', evt: 'login', state: 'success'});
+            logger.info({mod: 'authorize', evt: 'login', state: 'success', userName: userName});
 
             res.send(200, {token: token, userId: user._id, organisation: user.organisation});
         });
