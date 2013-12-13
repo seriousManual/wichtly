@@ -12,14 +12,14 @@ module.exports = function (app, tokenHandler, userLoader) {
         d('credentials: %s, %s', userName, password);
 
         if (!userName || !password) {
-            logger.info({mod: 'authorize', evt: 'login', state: 'badRequest'});
+            logger.warn({mod: 'authorize', evt: 'login', state: 'badRequest'});
             return next(new errors.BadRequestError('userName and/or password missing'));
         }
 
         userLoader.loadUser(userName, password, function (error, user) {
             if (error || !user) {
                 d('failed');
-                logger.info({mod: 'authorize', evt: 'login', state: 'failed', userName: userName});
+                logger.warn({mod: 'authorize', evt: 'login', state: 'failed', userName: userName});
 
                 return next(new errors.Unauthorized());
             }
