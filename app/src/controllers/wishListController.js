@@ -48,6 +48,18 @@ function wishList($scope, $http, locationService, authService, messageService) {
         locationService.gotoCreateWish(userId);
     };
 
+    $scope.deleteComment = function (userId, wishId, commentId) {
+        var url = util.format('/api/user/%s/wish/%s/comment/%s', userId, wishId, commentId);
+
+        $http.delete(url, {headers: {wichtlyauth: authService.getToken()}})
+            .success(function (data) {
+                retrieve($http, authService, handle);
+            })
+            .error(function () {
+                messageService.error('sorry...');
+            });
+    };
+
     $scope.addComment = function (userId, wishId, text) {
         if (!text) return;
 

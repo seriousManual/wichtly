@@ -5,15 +5,15 @@ body {
 }
 
 .container {
-    max-width:700px;
+    max-width: 700px;
 }
 
 .alert {
-    margin-bottom:0px;
+    margin-bottom: 0px;
 }
 
 #messages {
-    margin-top:10px;
+    margin-top: 10px;
 }
 
 .message {
@@ -22,48 +22,58 @@ body {
 }
 
 .user h2 {
-    margin:0 0 10px 0;
-    float:left;
+    margin: 0 0 10px 0;
+    float: left;
 }
 
 .wish .proposedBy {
-    border:1px solid #ffaeae;
+    border: 1px solid #ffaeae;
 }
 
 .wish .proposedByText {
     color: #d9534f;
-    font-size:10px;
-    line-height:20px;
+    font-size: 10px;
+    line-height: 20px;
 }
 
 .wish strong {
-    line-height:20px;
+    line-height: 20px;
 }
 
 .wish .comments {
 }
 
 .wish .comments h3 {
-    font-size:14px;
-    font-weight:bold;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .wish .buttons {
-    margin-bottom:15px;
+    margin-bottom: 15px;
 }
 
 .wish .comments .comment {
-    margin-bottom:8px;
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.wish .comments .comment .delete {
+    position: absolute;
+    right: 10px;
+    font-size: 10px;
+    color: #aaa;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .wish .comments .comment .commentCreatorName {
-    color:#333;
-    font-weight:bold;
-    font-size:12px;
+    color: #333;
+    font-weight: bold;
+    font-size: 12px;
 }
 
 .wish .comments .comment .commentText {
-    font-size:12px;
+    font-size: 12px;
 }
 
 .wish .commentForm {
@@ -71,30 +81,30 @@ body {
 }
 
 .user .newWish {
-    display:inline-block;
-    margin-left:10px;
-    font-size:11px;
-    color:#666;
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 11px;
+    color: #666;
     cursor: pointer;
 }
 
 .wish h3 {
-    margin-top:0px;
+    margin-top: 0px;
 }
 
 .wish .description {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
 .wish .bought {
-    padding:5px;
-    color:#fff;
-    font-size:11px;
-    background-color:#66a466;
+    padding: 5px;
+    color: #fff;
+    font-size: 11px;
+    background-color: #66a466;
 }
 
 #changeView textarea {
-    height:180px;
+    height: 180px;
 }
 
 .form-signin {
@@ -102,8 +112,8 @@ body {
     padding: 15px;
     margin: 0 auto;
 }
-.form-signin .form-signin-heading,
 
+.form-signin .form-signin-heading,
 .form-signin .form-control {
     position: relative;
     font-size: 16px;
@@ -113,14 +123,17 @@ body {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
 .form-signin .form-control:focus {
     z-index: 2;
 }
+
 .form-signin input[type="text"] {
     margin-bottom: -1px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
+
 .form-signin input[type="password"] {
     margin-bottom: 10px;
     border-top-left-radius: 0;

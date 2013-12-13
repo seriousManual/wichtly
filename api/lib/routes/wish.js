@@ -102,11 +102,27 @@ module.exports = function (app, authorization, wishLoader) {
             res.send(201);
         });
     });
+
+    app.delete('/api/user/:userId/wish/:wishId/comment/:commentId', authorization.sameUser, routeLogger('delete', '/user/:userId/wish/:wishId/comment/:commentId'), function (req, res, next) {
+        var wishId = req.params.wishId;
+        var userId = req.params.userId;
+        var commentId = req.params.commentId;
+
+        d('deleting comment, wish: %s, comment: %s', wishId, commentId);
+        logger.info({mod: 'wish', evt: 'commentDelete', user: userId, wishId: wishId, commentId: commentId});
+
+        wishLoader.removeComment(userId, wishId, commentId, function (error, result) {
+            if (error) return next(error);
+
+            res.send(204);
+        });
+    });
 };
 
-// GET    /api/user/:userId/wish                  get all wishes of user :userId
-// GET    /api/user/:userId/wish/:wishId          get distinct wish :wishId of user :userId
-// PUT    /api/user/:userId/wish                  create wish for :userId
-// POST   /api/user/:userId/wish/:wishId          update wish
-// DELETE /api/user/:userId/wish/:wishId          delete wish
-// PUT    /api/user/:userId/wish/:wishId/comment  create comment
+// GET    /api/user/:userId/wish                                get all wishes of user :userId
+// GET    /api/user/:userId/wish/:wishId                        get distinct wish :wishId of user :userId
+// PUT    /api/user/:userId/wish                                create wish for :userId
+// POST   /api/user/:userId/wish/:wishId                        update wish
+// DELETE /api/user/:userId/wish/:wishId                        delete wish
+// PUT    /api/user/:userId/wish/:wishId/comment                create comment
+// DELETE /api/user/:userId/wish/:wishId/comment/:commentId     delete comment

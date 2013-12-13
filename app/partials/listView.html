@@ -34,6 +34,7 @@
                     <div class="comments panel" ng-show="wish.comments.length > 0">
                         <h3>Kommentare</h3>
                         <div class="comment clearfix" ng-repeat="comment in wish.comments">
+                            <span ng-show="wish.isOwn" ng-click="deleteComment(person._id, wish._id, comment._id)" class="delete">X</span>
                             <div class="commentCreatorName">{{comment.creatorName}}</div>
                             <div class="commentText" ng-bind-html-unsafe='reworkText(comment.text)'></div>
                         </div>

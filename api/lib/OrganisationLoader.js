@@ -28,7 +28,7 @@ OrganisationLoader.prototype.addUser = function (organisationId, user, callback)
     Organisation
         .findById(organisationId)
         .exec(function (error, organisation) {
-            if(error) return callback(error, null);
+            if (error) return callback(error, null);
 
             if (!organisation) return callback(new errors.NotFoundError('organisation ' + organisationId), null);
 

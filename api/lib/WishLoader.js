@@ -7,7 +7,7 @@ function WishLoader(userLoader) {
 }
 
 WishLoader.prototype.loadWishesByUserId = function (userId, callback) {
-    this._userLoader.loadUserById(userId, function(error, user) {
+    this._userLoader.loadUserById(userId, function (error, user) {
         if (error) return callback(error);
 
         if (!user) return callback(new errors.NotFoundError('user ' + userId));
@@ -17,20 +17,20 @@ WishLoader.prototype.loadWishesByUserId = function (userId, callback) {
 };
 
 WishLoader.prototype.loadWishByUserIdWishId = function (userId, wishId, callback) {
-    this._loadWishByUserIdWishId(userId, wishId, function(error, user, wish) {
+    this._loadWishByUserIdWishId(userId, wishId, function (error, user, wish) {
         callback(error, wish);
     });
 };
 
 WishLoader.prototype.createWish = function (userId, title, description, creator, callback) {
-    this._userLoader.loadUserById(userId, function(error, user) {
+    this._userLoader.loadUserById(userId, function (error, user) {
         if (error) return callback(error);
 
         if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
         user.wishes.push({
-            title:title,
-            description:description,
+            title: title,
+            description: description,
             creator: creator
         });
 
@@ -39,8 +39,8 @@ WishLoader.prototype.createWish = function (userId, title, description, creator,
 };
 
 WishLoader.prototype.updateWish = function (userId, wishId, title, description, bought, creator, callback) {
-    this._loadWishByUserIdWishId(userId, wishId, function(error, user, wish) {
-        if(error) return callback(error);
+    this._loadWishByUserIdWishId(userId, wishId, function (error, user, wish) {
+        if (error) return callback(error);
 
         if (title !== null) wish.title = title;
         if (description !== null) wish.description = description;
@@ -52,8 +52,8 @@ WishLoader.prototype.updateWish = function (userId, wishId, title, description, 
 };
 
 WishLoader.prototype.removeWish = function (userId, wishId, callback) {
-    this._loadWishByUserIdWishId(userId, wishId, function(error, user, wish) {
-        if(error) return callback(error);
+    this._loadWishByUserIdWishId(userId, wishId, function (error, user, wish) {
+        if (error) return callback(error);
 
         wish.remove();
 
@@ -62,8 +62,8 @@ WishLoader.prototype.removeWish = function (userId, wishId, callback) {
 };
 
 WishLoader.prototype.addComment = function (userId, wishId, creatorName, text, callback) {
-    this._loadWishByUserIdWishId(userId, wishId, function(error, user, wish) {
-        if(error) return callback(error);
+    this._loadWishByUserIdWishId(userId, wishId, function (error, user, wish) {
+        if (error) return callback(error);
 
         wish.comments.push({
             creatorName: creatorName,
@@ -75,8 +75,8 @@ WishLoader.prototype.addComment = function (userId, wishId, creatorName, text, c
 };
 
 WishLoader.prototype.removeComment = function (userId, wishId, commentId, callback) {
-    this._loadWishByUserIdWishId(userId, wishId, function(error, user, wish) {
-        if(error) return callback(error);
+    this._loadWishByUserIdWishId(userId, wishId, function (error, user, wish) {
+        if (error) return callback(error);
 
         wish.comments.id(commentId).remove();
 
@@ -84,15 +84,15 @@ WishLoader.prototype.removeComment = function (userId, wishId, commentId, callba
     });
 };
 
-WishLoader.prototype._loadWishByUserIdWishId = function(userId, wishId, callback) {
-    this._userLoader.loadUserById(userId, function(error, user) {
+WishLoader.prototype._loadWishByUserIdWishId = function (userId, wishId, callback) {
+    this._userLoader.loadUserById(userId, function (error, user) {
         if (error) return callback(error);
 
         if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
         var wish = user.wishes.id(wishId);
 
-        if(!wish) return callback(new errors.NotFoundError('wish ' + wishId));
+        if (!wish) return callback(new errors.NotFoundError('wish ' + wishId));
 
         callback(null, user, wish);
     });
