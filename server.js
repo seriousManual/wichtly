@@ -10,6 +10,8 @@ var requestLogMiddleware = require('./api/middlewares/requestLogger');
 var d = require('debug')('wichtly');
 
 var app = express();
+app.enable('trust proxy');
+
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 

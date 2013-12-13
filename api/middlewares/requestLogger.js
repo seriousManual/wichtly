@@ -7,7 +7,14 @@ module.exports = function() {
         var getElapsed = hirestime();
 
         res.on('header', function() {
-            logger.info({mod: 'main', evt: 'request', path: req.path, statusCode: res.statusCode, dur: getElapsed()});
+            logger.info({
+                mod: 'main',
+                evt: 'request',
+                path: req.path,
+                statusCode: res.statusCode,
+                dur: getElapsed(),
+                ip: req.ip
+            });
         });
 
         next();
