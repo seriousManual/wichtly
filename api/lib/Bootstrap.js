@@ -33,7 +33,7 @@ module.exports = function (app, callback) {
 function install(app, callback) {
     var tokenHandler = new TokenHandler(configuration.authorization.secret);
     var userLoader = new UserLoader();
-    var wishLoader = new WishLoader();
+    var wishLoader = new WishLoader(userLoader);
     var organisationLoader = new OrganisationLoader();
     var authorizationMiddleware = Authorizationmiddleware(tokenHandler, userLoader);
 
