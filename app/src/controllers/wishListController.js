@@ -1,5 +1,7 @@
 var util = require('util');
 
+var textTools = require('../lib/utils/textTools');
+
 function wishList($scope, $http, locationService, authService, messageService) {
     retrieve($http, authService, handle);
 
@@ -92,30 +94,10 @@ function wishList($scope, $http, locationService, authService, messageService) {
         $scope.grouped = result.members;
     }
 
-    //TODO: this sanitation step has to be cleaned up and refactored
     $scope.reworkText = function (text) {
-        if (!text) return text;
-
-        var linebreakPattern = /[\n]/g;
-        var urlPattern = /(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|])/ig;
-
-        text = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        text = text.replace(linebreakPattern, '<br>');
-
-        var res = text.match(urlPattern);
-
-        if (!res) return text;
-
-        res.forEach(function (url) {
-            var insertUrl;
-            if (url.length > 40) {
-                insertUrl = url.substr(0, 20) + '[...]' + url.substr(-20);
-            } else {
-                insertUrl = url;
-            }
-
-            text = text.replace(url, '<a href="' + url + '">' + insertUrl + '</a>');
-        });
+        text = textTools.sanitize(text);
+        text = textTools.replaceLinebreaks(text);
+        text = textTools.replaceUrls(text);
 
         return text;
     };
