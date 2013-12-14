@@ -1,5 +1,5 @@
-var Organisation = require('./models/Organisation').model;
-var errors = require('./errors');
+var Organisation = require('../models/Organisation').model;
+var errors = require('../errors');
 
 function OrganisationLoader() {
 }

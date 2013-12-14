@@ -1,6 +1,6 @@
-var UserModel = require('./models/User').model;
+var UserModel = require('../models/User').model;
 
-var errors = require('./errors');
+var errors = require('../errors');
 
 function WishLoader(userLoader) {
     this._userLoader = userLoader;

@@ -1,4 +1,4 @@
-var User = require('./models/User').model;
+var User = require('../models/User').model;
 
 function UserLoader() {
 }

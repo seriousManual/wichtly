@@ -6,9 +6,9 @@ var logger = require('./logger');
 var connection = require('./connection');
 
 var TokenHandler = require('./authorization/TokenHandler');
-var UserLoader = require('./UserLoader');
-var WishLoader = require('./WishLoader');
-var OrganisationLoader = require('./OrganisationLoader');
+var UserLoader = require('./loaders/UserLoader');
+var WishLoader = require('./loaders/WishLoader');
+var OrganisationLoader = require('./loaders/OrganisationLoader');
 var Authorizationmiddleware = require('../middlewares/authorization');
 var InitMidleware = require('../middlewares/init');
 
