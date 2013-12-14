@@ -16,7 +16,7 @@ module.exports = function (app, tokenHandler, userLoader) {
             return next(new errors.BadRequestError('userName and/or password missing'));
         }
 
-        userLoader.loadUser(userName, password, function (error, user) {
+        userLoader.loginUser(userName, password, function (error, user) {
             if (error || !user) {
                 d('failed');
                 logger.warn({mod: 'authorize', evt: 'login', state: 'failed', userName: userName});
