@@ -4,7 +4,7 @@ var routeLogger = require('../../middlewares/routeLogger');
 var errors = require('../errors');
 var d = require('debug')('wichtly:wish');
 
-module.exports = function (app, authorization, wishLoader) {
+module.exports = function (app, authorization, wishLoader, loggingService) {
     app.get('/api/user/:userId/wish', authorization, routeLogger('get', '/user/:userId/wish'), function (req, res, next) {
         var userId = req.params.userId;
 
@@ -41,8 +41,10 @@ module.exports = function (app, authorization, wishLoader) {
         d('creating wish: user %s, title: %s, description: %s', userId, title, description);
         logger.info({mod: 'wish', evt: 'wishCreate', user: userId});
 
-        wishLoader.createWish(userId, title, description, creator, function (error, user) {
+        wishLoader.createWish(userId, title, description, creator, function (error, wish) {
             if (error) return next(error);
+
+            loggingService.logAdd(req.WICHTLY.user.organisation, creator, wish._id, title);
 
             res.send(201);
         });
@@ -68,6 +70,8 @@ module.exports = function (app, authorization, wishLoader) {
         wishLoader.updateWish(userId, wishId, title, description, bought, creator, function (error) {
             if (error) return next(error);
 
+            loggingService.logEdit(req.WICHTLY.user.organisation, req.WICHTLY.user.userName, wishId, title);
+
             res.send(200);
         });
     });
@@ -81,6 +85,8 @@ module.exports = function (app, authorization, wishLoader) {
 
         wishLoader.removeWish(userId, wishId, function (error, result) {
             if (error) return next(error);
+
+            loggingService.logDelete(req.WICHTLY.user.organisation, req.WICHTLY.user.userName, wishId, '');
 
             res.send(204);
         });
@@ -98,6 +104,8 @@ module.exports = function (app, authorization, wishLoader) {
 
         wishLoader.addComment(userId, wishId, creatorName, text, function (error, result) {
             if (error) return next(error);
+
+            loggingService.logComment(req.WICHTLY.user.organisation, req.WICHTLY.user.userName, wishId, text);
 
             res.send(201);
         });

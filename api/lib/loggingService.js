@@ -1,39 +1,50 @@
-var Events = require('./models/Events');
+var Events = require('./models/Events').model;
 
 function LoggingService() {
 
 }
 
-LoggingService.prototype.logAdd = function (creatorName, creatorId, wishId, wishOwnerId, callback) {
-    this._log('adds', creatorName, creatorId, wishId, wishOwnerId, true, callback);
+LoggingService.prototype.logAdd = function (organisationId, creatorName, wishId, wishTitle, callback) {
+    this._log('adds', organisationId, creatorName, wishId, wishTitle, callback);
 };
 
-LoggingService.prototype.logEdit = function (creatorName, creatorId, wishId, wishOwnerId, callback) {
-    this._log('adds', creatorName, creatorId, wishId, wishOwnerId, true, callback);
+LoggingService.prototype.logEdit = function (organisationId, creatorName, wishId, wishTitle, callback) {
+    this._log('edits', organisationId, creatorName, wishId, wishTitle, callback);
 };
 
-LoggingService.prototype.logDelete = function (creatorName, creatorId, wishId, wishOwnerId, callback) {
-    this._log('adds', creatorName, creatorId, wishId, wishOwnerId, true, callback);
+LoggingService.prototype.logDelete = function (organisationId, creatorName, wishId, wishTitle, callback) {
+    this._log('deletes', organisationId, creatorName, wishId, wishTitle, callback);
 };
 
-LoggingService.prototype.logComment = function (creatorName, creatorId, wishId, wishOwnerId, callback) {
-    this._logComment('commentOnWish', creatorName, creatorId, wishId, wishOwnerId, true, callback);
+LoggingService.prototype.logComment = function (organisationId, creatorName, wishId, commentText, callback) {
+    this._log('comments', organisationId, creatorName, wishId, commentText, callback);
 };
 
-LoggingService.prototype._logComment = function(commentLogKind, creatorId, creatorName, wishId, wishOwnerId, callback) {
-    var that = this;
+LoggingService.prototype._log = function (logKind, organisationId, creatorName, wishId, assetText, callback) {
+    if(!callback) callback = function() {};
 
-    //get all comments to the wish
-    //call _log serveral times on each commentER
-    var commenters = [];
+    var event = {
+        creatorName: creatorName,
+        wishId: wishId,
+        assetText: assetText
+    };
 
-    commenters.forEach(function(commenter) {
-        that._log('commentOnWish | commentOnCommented', commenter._id, creatorName, creatorId, wishId, false, callback);
-    });
-};
+    Events
+        .find({organisationId: organisationId})
+        .exec(function (error, result) {
+            if (error) return callback(error);
 
-LoggingService.prototype._log = function (kind, userId, creatorName, creatroId, wishId, logToOrganisation, callback) {
+            var events;
+            if (result.length === 0)  {
+                events = new Events({organisationId: organisationId});
+            } else {
+                events = result[0];
+            }
 
+            events[logKind].push(event);
+
+            events.save(callback);
+        });
 };
 
 module.exports = LoggingService;

@@ -1,4 +1,4 @@
-var UserModel = require('../models/User').model;
+var Wish = require('../models/Wish').model;
 
 var errors = require('../errors');
 
@@ -28,13 +28,19 @@ WishLoader.prototype.createWish = function (userId, title, description, creator,
 
         if (!user) return callback(new errors.NotFoundError('user ' + userId));
 
-        user.wishes.push({
+        var wish = new Wish({
             title: title,
             description: description,
             creator: creator
         });
 
-        user.save(callback);
+        user.wishes.push(wish);
+
+        user.save(function (error, result) {
+            if (error) return callback(error);
+
+            callback(null, wish);
+        });
     });
 };
 

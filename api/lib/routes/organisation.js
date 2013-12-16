@@ -66,4 +66,3 @@ module.exports = function (app, authorization, organisationLoader) {
 //GET /api/organisation/:organisationId
 //GET /api/organisation/:organisationId/user
 //PUT /api/organisation/:organisationId/user
-//PUT /api/organisation/:organisationId/wish/
