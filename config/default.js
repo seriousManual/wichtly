@@ -18,5 +18,12 @@ module.exports = {
         port: 27017,
         user: '',
         pass: ''
+    },
+
+    mail: {
+        host: '',
+        userName: '',
+        password: '',
+        port: 123
     }
 };

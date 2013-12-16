@@ -1,7 +1,7 @@
 {
   "name": "wichtly",
   "description": "wicht utlitiy",
-  "version": "0.7.5",
+  "version": "0.7.5-1",
   "repository": {
     "type": "git",
     "url": "https://github.com/zaphod1984/wichtly"
@@ -18,7 +18,10 @@
     "debug": "~0.7.4",
     "winston": "~0.7.2",
     "winston-splnkstrm": "~0.1.0",
-    "hirestime": "~0.2.3"
+    "hirestime": "~0.2.3",
+    "ejs": "~0.8.5",
+    "nodemailer": "~0.5.15",
+    "dustjs-linkedin": "~2.2.2"
   },
   "main": "./server.js",
   "keywords": [
@@ -26,7 +29,8 @@
   ],
   "scripts": {
     "start": "node server.js",
-    "postinstall": "./node_modules/.bin/browserify -e app/src/app.js -o app/js/app.js"
+    "postinstall": "./node_modules/.bin/browserify -e app/src/app.js -o app/js/app.js",
+    "test": "./node_modules/.bin/mocha tests"
   },
   "engines": {
     "node": ">=0.10"
@@ -34,6 +38,7 @@
   "subdomain": "wichtly",
   "devDependencies": {
     "mocha": "~1.15.1",
-    "chai": "~1.8.1"
+    "chai": "~1.8.1",
+    "sinon": "~1.7.3"
   }
 }
