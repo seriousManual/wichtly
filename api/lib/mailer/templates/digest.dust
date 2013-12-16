@@ -1,0 +1,9 @@
+Guten Tag!
+
+Es folgt ein Abriss über die Ereignisse des heutigen Tages:
+
+Neu:
+<% newWishes.forEach(function(wish){ %>
+<%= wish.title %> von <%= wish.creator %>
+<%= wish.link %>
+<% }) %>
