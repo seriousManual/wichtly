@@ -27,8 +27,15 @@ describe('tokenHandler', function() {
     });
 
     it('should validate a token with the std ttl (fail)', function() {
+        var token = 'f00_0_69862933aa0f1aefda3d7500180e7bb063244f98';
+
+        expect(t.validate(token)).to.deep.equal({
+            userId: 'f00',
+            timeStamp: '0'
+        });
+
         clock.tick(1500);
-        expect(t.validate('f00_0_69862933aa0f1aefda3d7500180e7bb063244f98')).to.be.false;
+        expect(t.validate(token)).to.be.false;
     });
 
     it('should validate a token with custom ttl (success)', function() {
