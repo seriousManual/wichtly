@@ -21,6 +21,21 @@ body {
     margin: 0;
 }
 
+#list {
+    position:relative;
+}
+
+#toc {
+    position: fixed;
+    left:10px;
+    max-width:250px;
+    width:20%;
+}
+
+#toc li {
+    cursor: pointer;
+}
+
 .user h2 {
     margin: 0 0 10px 0;
     float: left;

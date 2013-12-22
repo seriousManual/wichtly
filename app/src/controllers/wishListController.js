@@ -5,6 +5,10 @@ var textTools = require('../lib/utils/textTools');
 function wishList($scope, $http, locationService, authService, messageService) {
     retrieve($http, authService, handle);
 
+    $scope.gotoUser = function (userId) {
+        locationService.gotoList(userId);
+    };
+
     $scope.edit = function (userId, wishId) {
         locationService.gotoWish(wishId);
     };

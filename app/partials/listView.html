@@ -1,8 +1,12 @@
 <div id="list">
+    <ul id="toc"  class="list-group">
+        <li ng-repeat="person in grouped" class="list-group-item" ng-click="gotoUser(person._id)">{{person.userName}}</li>
+    </ul>
+
     <h1>Wunschzettel ({{organisationName}})</h1>
 
     <div ng-repeat="person in grouped" class="well user">
-        <h2>{{person.userName}}</h2>
+        <h2 id="{{person._id}}">{{person.userName}}</h2>
         <span ng-click="addWish(person._id)" class="newWish">[Neuer Wunsch]</span>
 
         <span class="clearfix"></span>
