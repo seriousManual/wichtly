@@ -16,10 +16,16 @@ module.exports = function (app, tokenHandler, userLoader) {
             return next(new errors.BadRequestError('userName and/or password missing'));
         }
 
-        userLoader.loginUser(mail, password, function (error, user) {
+        userLoader.loadUserByMail(mail, function (error, user) {
             if (error || !user) {
                 d('failed');
-                logger.warn({mod: 'authorize', evt: 'login', state: 'failed', mail: mail});
+                logger.warn({mod: 'authorize', evt: 'login', state: 'failedNotFound', mail: mail});
+
+                return next(new errors.Unauthorized());
+            }
+
+            if(!user.checkPassword(password)) {
+                logger.warn({mod: 'authorize', evt: 'login', state: 'failedWrongPassword', mail: mail});
 
                 return next(new errors.Unauthorized());
             }
