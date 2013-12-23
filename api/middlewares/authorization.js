@@ -39,7 +39,7 @@ module.exports = function (tokenHandler, userLoader) {
             userLoader.loadUserById(validated.userId, function (error, user) {
                 if (error) return callback(error);
 
-                if (!user) return callback(null, null);
+                if (!user) return callback(new errors.Unauthorized());
 
                 callback(null, user);
             });
