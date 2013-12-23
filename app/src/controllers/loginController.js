@@ -4,20 +4,20 @@ function loginController($scope, $http, locationService, messageService, authSer
     }
 
     $scope.login = function () {
-        var userName = $scope.userName;
+        var mail = $scope.mail;
         var password = $scope.password;
 
-        if (!userName || !password) {
+        if (!mail || !password) {
             return messageService.error('credentials missing!');
         }
 
-        $http.post('/api/authenticate', { userName: userName, password: password })
+        $http.post('/api/authenticate', { mail: mail, password: password })
             .success(handle)
             .error(handle);
 
         function handle(data, status) {
-            if (status == 401) {
-                messageService.error('username oder passwort inkorrekt');
+            if (status === 401) {
+                messageService.error('mail adresse oder passwort inkorrekt');
             } else if (status !== 200) {
                 messageService.error('sorry, something bad happend');
             } else {

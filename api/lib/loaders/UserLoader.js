@@ -3,8 +3,8 @@ var User = require('../models/User').model;
 function UserLoader() {
 }
 
-UserLoader.prototype.loginUser = function (userName, password, callback) {
-    User.findOne({userName: userName, password: password}).exec(function (error, result) {
+UserLoader.prototype.loginUser = function (mail, password, callback) {
+    User.findOne({mail: mail, password: password}).exec(function (error, result) {
         if (error) return callback(error, null);
 
         if (!result) return callback(null, null);
