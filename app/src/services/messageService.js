@@ -1,8 +1,8 @@
 var angular = require('../lib/angular');
 
-function MessageService($timeout) {
+function MessageService($rootScope) {
     this._data = [];
-    this._$timeout = $timeout;
+    this._$rootScope = $rootScope;
 }
 
 MessageService.prototype.error = function(headline, message) {
@@ -27,15 +27,11 @@ MessageService.prototype._write = function(what, headline, message) {
         _headline = headline;
     }
 
-    this._data.push({
+    this._$rootScope.$broadcast('message', {
         what: what,
         headline: _headline,
         message: _mssg
     });
-};
-
-MessageService.prototype.data = function() {
-    return this._data;
 };
 
 module.exports.install = function(app) {

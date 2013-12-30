@@ -1,4 +1,6 @@
-<div class="alert alert-{{message.what}}">
-    <a class="close" data-dismiss="alert">x</a>
-    <strong>{{message.headline}}</strong> {{message.message}}
+<div id="messages" ng-repeat="message in messages">
+    <div class="alert alert-{{message.what}}">
+        <a class="close" data-dismiss="alert">x</a>
+        <strong>{{message.headline}}</strong> {{message.message}}
+    </div>
 </div>

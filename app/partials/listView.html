@@ -21,6 +21,8 @@
                     <div class="description" ng-bind-html-unsafe='reworkText(wish.description)'></div>
 
                     <div class="buttons">
+                        <button type="button" class="btn btn-danger" ng-click="perkins()">perkins</button>
+
                         <div ng-show="wish.isOwn">
                             <button type="button" class="btn btn-primary" ng-show="wish.proposedBy" ng-click="acknowledge(person._id, wish._id)">Vorschlag bestätigen</button>
 

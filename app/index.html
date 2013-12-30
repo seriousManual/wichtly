@@ -26,9 +26,7 @@
             </div>
         </div>
 
-        <div id="messages" ng-controller="messageController">
-            <message ng-repeat="message in messages" message="message" class="message"/>
-        </div>
+        <ng-message></ng-message>
 
         <div class="container" ng-view></div>
 
