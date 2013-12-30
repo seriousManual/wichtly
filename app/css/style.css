@@ -21,6 +21,26 @@ body {
     margin: 0;
 }
 
+#wait {
+    position:fixed;
+    z-index:10000;
+
+    width:300px;
+    height:150px;
+    left: 50%;
+    top: 200px;
+
+    margin-left:-200px;
+
+    background-image: url(/img/wait.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#wait img {
+    margin: 0 auto;
+}
+
 #list {
     position:relative;
 }
