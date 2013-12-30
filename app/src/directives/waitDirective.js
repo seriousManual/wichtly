@@ -11,6 +11,8 @@ function waitDirective() {
             $rootScope.$on('messageWait', function (event, show) {
                 waitStack += (show ? 1 : -1);
 
+                waitStack = Math.max(waitStack, 0);
+
                 $scope.showWait = waitStack > 0;
             });
         }
