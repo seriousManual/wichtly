@@ -19,6 +19,10 @@ app.use(requestLogMiddleware());
 
 app.configure('development', function(){
     app.use('/js/app.js', browserify.serve({ entry:path.join(__dirname, 'app/src/app.js') }));
+    
+    app.use(function(req, res, next) {
+        setTimeout(next, Math.random() * 1000);
+    });
 });
 
 app.use(express.static(__dirname + '/app'));
