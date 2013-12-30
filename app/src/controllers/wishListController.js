@@ -5,10 +5,6 @@ var textTools = require('../lib/utils/textTools');
 function wishList($scope, $http, locationService, authService, messageService) {
     retrieve($http, authService, handle);
 
-    $scope.perkins = function(){
-        messageService.info('foo');
-    };
-
     $scope.gotoUser = function (userId) {
         locationService.gotoList(userId);
     };
