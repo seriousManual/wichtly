@@ -2,8 +2,8 @@ var util = require('util');
 
 var textTools = require('../lib/utils/textTools');
 
-function wishList($scope, $http, locationService, authService, messageService) {
-    retrieve($http, authService, handle);
+function wishList($scope, $http, locationService, authService, messageService, backendService) {
+    backendService.loadOrganisation(authService.getOrganisation(), handle);
 
     $scope.gotoUser = function (userId) {
         locationService.gotoList(userId);
@@ -14,40 +14,28 @@ function wishList($scope, $http, locationService, authService, messageService) {
     };
 
     $scope.deleteWish = function (userId, wishId) {
-        var url = util.format('/api/user/%s/wish/%s', authService.getUserId(), wishId);
+        backendService.deleteWish(userId, wishId, function (error) {
+            if (error) return messageService.error('Wunsch konnte nicht gelöscht werden');
 
-        $http.delete(url, {headers: {wichtlyauth: authService.getToken()}})
-            .success(function (data) {
-                retrieve($http, authService, handle);
-            })
-            .error(function () {
-                messageService.error('sorry...');
-            });
+            backendService.loadOrganisation(authService.getOrganisation(), handle);
+        });
     };
 
     $scope.bought = function (userId, wishId) {
-        var url = util.format('/api/user/%s/wish/%s', userId, wishId);
+        backendService.editWish(userId, wishId, {bought: true}, function (error) {
+            if (error) return messageService.error('konnte wunsch nicht auf gekauft setzen');
 
-        $http.post(url, {bought: true}, {headers: {wichtlyauth: authService.getToken()}})
-            .success(function (data) {
-                retrieve($http, authService, handle);
-            })
-            .error(function () {
-                messageService.error('sorry...');
-            });
+            loadOrganisation();
+        });
     };
 
     $scope.acknowledge = function (userId, wishId) {
-        var url = util.format('/api/user/%s/wish/%s', userId, wishId);
-
         //TODO: bad hack, we should set the actual creators name here..........
-        $http.post(url, {creator: ''}, {headers: {wichtlyauth: authService.getToken()}})
-            .success(function (data) {
-                retrieve($http, authService, handle);
-            })
-            .error(function () {
-                messageService.error('sorry...');
-            });
+        backendService.editWish(userId, wishId, {creator: ''}, function (error) {
+            if (error) return messageService.error('konnte wunsch nicht bestätigt werden');
+
+            loadOrganisation();
+        });
     };
 
     $scope.addWish = function (userId) {
@@ -55,30 +43,26 @@ function wishList($scope, $http, locationService, authService, messageService) {
     };
 
     $scope.deleteComment = function (userId, wishId, commentId) {
-        var url = util.format('/api/user/%s/wish/%s/comment/%s', userId, wishId, commentId);
+        backendService.deleteComment(userId, wishId, commentId, function (error) {
+            if (error) return messageService.error('kommentar konnte nicht gelöscht werden');
 
-        $http.delete(url, {headers: {wichtlyauth: authService.getToken()}})
-            .success(function (data) {
-                retrieve($http, authService, handle);
-            })
-            .error(function () {
-                messageService.error('sorry...');
-            });
+            loadOrganisation();
+        });
     };
 
     $scope.addComment = function (userId, wishId, text) {
         if (!text) return;
 
-        var url = util.format('/api/user/%s/wish/%s/comment', userId, wishId);
+        backendService.addComment(userId, wishId, text, function (error) {
+            if (error) return messageService.error('kommentar konnte nicht erstellt werden');
 
-        $http.put(url, {text: text}, {headers: {wichtlyauth: authService.getToken()}})
-            .success(function (data) {
-                retrieve($http, authService, handle);
-            })
-            .error(function () {
-                messageService.error('sorry...');
-            });
+            loadOrganisation();
+        });
     };
+
+    function loadOrganisation() {
+        backendService.loadOrganisation(authService.getOrganisation(), handle);
+    }
 
     function handle(error, result) {
         if (error) {
@@ -105,16 +89,6 @@ function wishList($scope, $http, locationService, authService, messageService) {
 
         return text;
     };
-}
-
-function retrieve($http, authService, callback) {
-    var url = util.format('/api/organisation/%s', authService.getOrganisation());
-
-    $http.get(url, {headers: {wichtlyauth: authService.getToken()}})
-        .success(function (data) {
-            callback(null, data);
-        })
-        .error(callback);
 }
 
 module.exports = wishList;

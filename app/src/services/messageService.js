@@ -34,6 +34,14 @@ MessageService.prototype._write = function(what, headline, message) {
     });
 };
 
+MessageService.prototype.waitStart = function() {
+    this._$rootScope.$broadcast('messageWait', true);
+};
+
+MessageService.prototype.waitEnd = function() {
+    this._$rootScope.$broadcast('messageWait', false);
+};
+
 module.exports.install = function(app) {
     app.service('messageService', MessageService);
 };

@@ -1,24 +1,24 @@
 var util = require('util');
 
-function newController($scope, $http, $routeParams, locationService, authService, messageService) {
+function newController($scope, $http, $routeParams, locationService, authService, messageService, backendService) {
     $scope.save = function () {
         var userId = $routeParams.userId;
         var title = $scope.title;
         var description = $scope.description;
 
-        var url = util.format('/api/user/%s/wish', userId);
+        if(!title || !description) {
+            return messageService.error('title und/oder beschreibung fehlen');
+        }
 
-        $http.put(url, { title: title, description: description }, {headers: {wichtlyauth: authService.getToken()}})
-            .success(function () {
-                messageService.info('sucessfully created!');
-
-                locationService.gotoList();
-            })
-            .error(function () {
+        backendService.createWish(userId, title, description, function(error) {
+            if(error) {
                 messageService.error('on error occured while saving');
+            } else {
+                messageService.info('sucessfully created!');
+            }
 
-                locationService.gotoList();
-            });
+            locationService.gotoList();
+        })
     };
 
     $scope.back = function () {

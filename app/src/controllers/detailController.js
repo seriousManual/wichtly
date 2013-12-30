@@ -1,18 +1,16 @@
 var util = require('util');
 
-function detailController($scope, $http, $routeParams, locationService, authService, messageService) {
-    var url = util.format('/api/user/%s/wish/%s', authService.getUserId(), $routeParams.id);
-
-    $http.get(url, {headers: {wichtlyauth: authService.getToken()}})
-        .success(function (data) {
-            $scope.title = data.title;
-            $scope.description = data.description;
-        })
-        .error(function () {
+function detailController($scope, $http, $routeParams, locationService, authService, messageService, backendService) {
+    backendService.loadWish(authService.getUserId(), $routeParams.id, function (error, data) {
+        if (error) {
             messageService.error('unknown error');
 
-            locationService.gotoList();
-        });
+            return locationService.gotoList();
+        }
+
+        $scope.title = data.title;
+        $scope.description = data.description;
+    });
 
     $scope.back = function () {
         locationService.gotoList();
@@ -22,19 +20,20 @@ function detailController($scope, $http, $routeParams, locationService, authServ
         var title = $scope.title;
         var description = $scope.description;
 
-        var url = util.format('/api/user/%s/wish/%s', authService.getUserId(), $routeParams.id);
+        var changes = {
+            title: title,
+            description: description
+        };
 
-        $http.post(url, { title: title, description: description }, {headers: {wichtlyauth: authService.getToken()}})
-            .success(function () {
-                messageService.info('saved successfully');
+        backendService.editWish(authService.getUserId(), $routeParams.id, changes, function (error) {
+            if (error) {
+                messageService.error('beim Speichern ist ein Fehler aufgetreten');
+            } else {
+                messageService.info('wunsch wurde gespeichert');
+            }
 
-                locationService.gotoList();
-            })
-            .error(function () {
-                messageService.error('on error occured while saving');
-
-                locationService.gotoList();
-            });
+            locationService.gotoList();
+        });
     };
 }
 
