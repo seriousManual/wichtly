@@ -14,12 +14,8 @@ function BackendService($rootScope, $http, authService, messageService) {
         var url = util.format('/api/user/%s/wish', userId);
 
         that._$http.put(url, { title: title, description: description }, {headers: {wichtlyauth: that._authService.getToken()}})
-            .success(function () {
-                callback(null);
-            })
-            .error(function (error) {
-                callback(error);
-            });
+            .success(callback.bind(null, null))
+            .error(callback);
     });
 
     this.loadWish = wrap(function(userId, wishId, callback) {
