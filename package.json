@@ -1,7 +1,7 @@
 {
   "name": "wichtly",
   "description": "wicht utlitiy",
-  "version": "0.14.3",
+  "version": "0.14.3-1",
   "repository": {
     "type": "git",
     "url": "https://github.com/zaphod1984/wichtly"
@@ -28,9 +28,7 @@
     "wicht"
   ],
   "scripts": {
-    "start": "node server.js",
-    "postinstall": "./node_modules/.bin/browserify -e app/src/app.js -o app/js/app.js",
-    "test": "./node_modules/.bin/mocha tests"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=0.10"
