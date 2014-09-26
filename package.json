@@ -9,19 +9,19 @@
   "author": "Manuel Ernst <zaphod84@gmx.de>",
   "dependencies": {
     "browserify": "~3.0.0",
-    "express": "~3.4.6",
-    "connect-browserify": "~0.6.6",
-    "optimist": "~0.6.0",
-    "mongoose": "~3.6.17",
     "cloneextend": "0.0.3",
-    "seq": "~0.3.5",
+    "connect-browserify": "~0.6.6",
     "debug": "~0.7.4",
-    "winston": "~0.7.2",
-    "winston-splnkstrm": "~0.1.0",
-    "hirestime": "~0.2.3",
+    "dustjs-linkedin": "~2.2.2",
     "ejs": "~0.8.5",
+    "express": "~3.4.6",
+    "hirestime": "~0.2.3",
+    "mongoose": "~3.6.17",
     "nodemailer": "~0.5.15",
-    "dustjs-linkedin": "~2.2.2"
+    "optimist": "~0.6.0",
+    "seq": "~0.3.5",
+    "winston": "^0.8.0",
+    "winston-splnkstrm": "^1.0.0"
   },
   "main": "./server.js",
   "keywords": [
