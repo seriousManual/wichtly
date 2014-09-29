@@ -1,6 +1,6 @@
 var winston = require('winston');
 var Splnkstrm = require('winston-splnkstrm');
-var Logentries = require('winson-logentries');
+var Logentries = require('winston-logentries');
 
 var configuration = require('./configuration');
 
