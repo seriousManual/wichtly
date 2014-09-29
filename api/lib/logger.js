@@ -2,9 +2,13 @@ var winston = require('winston');
 var Splnkstrm = require('winston-splnkstrm');
 var Logentries = require('winston-logentries');
 
+var d = require('debug')('wichtly:logger');
+
 var configuration = require('./configuration');
 
 var transports = [];
+
+d('logger config: ', configuration.logging);
 
 if(configuration.logging.transport === 'Console') {
     transports.push(new (winston.transports.Console)());
